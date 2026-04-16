@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Níobe | @niromun_</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Patrick+Hand&family=VT323&family=Caveat:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== JP RETRO 2000s ==================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sky-pale: #E8F4FF;
+            --sky-light: #D0E6FA;
+            --sky-mid: #A8CFF0;
+            --sky-accent: #6BAED6;
+            --sky-deep: #4A90C4;
+            --cream: #FFF9F0;
+            --cream-mid: #F0E8DC;
+            --cloud: #FFFFFF;
+            --cloud-shadow: #E4EEF8;
+            --mint: #C8E8D8;
+            --mint-dark: #7AB89A;
+            --pink-soft: #FFE0E6;
+            --pink: #F0B0B8;
+            --lavender: #D8D0F0;
+            --text: #3A4860;
+            --text-mid: #5A6E88;
+            --text-light: #90A0B8;
+            --white: #FFFFFF;
+            --border: #B8D0E8;
+            --border-dark: #88A8C8;
+            --window-shadow: 3px 3px 0px rgba(70, 100, 140, 0.15), 0 8px 24px rgba(70, 100, 140, 0.08);
+            --radius: 14px;
+            --radius-lg: 22px;
+            --transition: 0.3s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Lato', sans-serif;
+            background: linear-gradient(180deg, #87CEEB 0%, #A8D8F0 15%, #C0E0F8 30%, #D8ECFC 50%, #E8F4FF 70%, #F0F8FF 100%);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.7;
+            font-weight: 400;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* GBA/DS pixel-art style clouds */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                /* Cloud 1 - large, top left */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cellipse cx='100' cy='32' rx='90' ry='22' fill='white' stroke='%23B8D8F0' stroke-width='1.5' opacity='0.75'/%3E%3C/svg%3E"),
+                /* Cloud 2 - medium, top right */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 50'%3E%3Cellipse cx='80' cy='26' rx='72' ry='18' fill='white' stroke='%23B8D8F0' stroke-width='1.5' opacity='0.7'/%3E%3C/svg%3E"),
+                /* Cloud 3 - small, mid left */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cellipse cx='60' cy='20' rx='54' ry='14' fill='white' stroke='%23B8D8F0' stroke-width='1.5' opacity='0.6'/%3E%3C/svg%3E"),
+                /* Cloud 4 - large, mid right */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 55'%3E%3Cellipse cx='90' cy='28' rx='82' ry='20' fill='white' stroke='%23B8D8F0' stroke-width='1.5' opacity='0.65'/%3E%3C/svg%3E"),
+                /* Cloud 5 - small, bottom */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 44'%3E%3Cellipse cx='70' cy='22' rx='64' ry='16' fill='white' stroke='%23B8D8F0' stroke-width='1.5' opacity='0.55'/%3E%3C/svg%3E"),
+                /* Cloud 6 - tiny accent */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 36'%3E%3Cellipse cx='50' cy='18' rx='44' ry='12' fill='white' stroke='%23B8D8F0' stroke-width='1.5' opacity='0.5'/%3E%3C/svg%3E");
+            background-position:
+                2% 8%, 68% 5%, 5% 40%, 72% 45%, 35% 78%, 88% 75%;
+            background-size:
+                280px 84px, 220px 69px, 160px 53px, 250px 76px, 190px 60px, 130px 47px;
+            background-repeat: no-repeat;
+            animation: cloudsDrift 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes cloudsDrift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(15px); }
+        }
+
+        /* Floating stars and sparkles */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                /* 4-point stars */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='14' height='14'%3E%3Cpath d='M12 0 L14 9 L24 12 L14 15 L12 24 L10 15 L0 12 L10 9 Z' fill='%23A8CFF0' opacity='0.35'/%3E%3C/svg%3E"),
+                /* 5-point stars */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='10' height='10'%3E%3Cpath d='M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z' fill='%23C8E0F8' opacity='0.3'/%3E%3C/svg%3E"),
+                /* Tiny dots */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' width='6' height='6'%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%23B0D4F0' opacity='0.3'/%3E%3C/svg%3E");
+            background-position:
+                8% 6%, 45% 3%, 82% 10%, 18% 25%, 62% 20%, 92% 30%,
+                5% 48%, 38% 42%, 75% 52%, 95% 55%,
+                12% 68%, 55% 72%, 85% 65%, 28% 85%, 65% 90%, 42% 58%;
+            background-size: 14px 14px, 10px 10px, 6px 6px;
+            background-repeat: no-repeat;
+            animation: starsTwinkle 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes starsTwinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        body > * { position: relative; z-index: 1; }
+
+        h1, h2, h3, h4 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        a { color: var(--sky-deep); text-decoration: none; transition: color var(--transition); }
+        a:hover { color: var(--sky-accent); }
+        img { max-width: 100%; display: block; }
+
+        /* ==================== DECORATIVE TAPE / STICKER ELEMENTS ==================== */
+        .washi-tape {
+            height: 14px;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(168,207,240,0.4) 0px, rgba(168,207,240,0.4) 10px,
+                rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px
+            );
+            border-top: 1px solid rgba(168,207,240,0.3);
+            border-bottom: 1px solid rgba(168,207,240,0.3);
+        }
+
+        .washi-tape.green {
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(200,232,216,0.5) 0px, rgba(200,232,216,0.5) 10px,
+                rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px
+            );
+            border-color: rgba(122,184,154,0.3);
+        }
+
+        .hearts-border {
+            height: 22px;
+            background-repeat: repeat-x;
+            background-size: 44px 22px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 22'%3E%3Cpath d='M12 4l1.8 5.5H20l-5 3.6 1.8 5.5L12 15l-5 3.6 1.8-5.5-5-3.6h6.2z' fill='%23A8CFF0' opacity='0.35'/%3E%3Cpath d='M34 6l1.2 3.7h3.9l-3.1 2.3 1.2 3.7-3.2-2.3-3.1 2.3 1.2-3.7-3.2-2.3h4z' fill='%23C8E8D8' opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        .dots-divider {
+            text-align: center;
+            padding: 1rem 0;
+            color: var(--text-light);
+            letter-spacing: 0.3em;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* ==================== RETRO SECTION COMPONENT ==================== */
+        .retro-section {
+            border: 3px solid #3A5A8A;
+            border-radius: 8px;
+            background: #FFFFFF;
+            box-shadow: 4px 4px 0px #2A3A5A;
+            overflow: hidden;
+        }
+
+        .retro-section-titlebar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 26px;
+            background: linear-gradient(180deg, #4A78B0 0%, #2A4A78 50%, #1A3058 100%);
+            border-bottom: 2px solid #1A2848;
+            padding: 0 6px;
+            font-family: 'VT323', monospace;
+            font-size: 13px;
+            color: #FFF;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.4);
+            user-select: none;
+        }
+
+        .retro-section-titlebar .retro-tb-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .retro-section-titlebar .retro-tb-icon {
+            font-size: 10px;
+            color: #F0D870;
+        }
+
+        .retro-section-titlebar .retro-tb-btns {
+            display: flex;
+            gap: 2px;
+        }
+
+        .retro-section-titlebar .retro-tb-btns span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            font-size: 9px;
+            background: linear-gradient(180deg, #E8E8E8, #C0C0C0);
+            border: 1px solid rgba(0,0,0,0.3);
+            border-radius: 2px;
+            color: #333;
+            cursor: default;
+        }
+
+        .retro-section-titlebar .retro-tb-btns span:last-child {
+            background: linear-gradient(180deg, #E88080, #C04040);
+            color: #FFF;
+            border-color: #A03030;
+        }
+
+        /* Variant titlebars */
+        .retro-section-titlebar.green-tb {
+            background: linear-gradient(180deg, #4A9070 0%, #2A6848 50%, #1A4830 100%);
+            border-bottom-color: #0A3020;
+        }
+
+        .retro-section-titlebar.pink-tb {
+            background: linear-gradient(180deg, #B06888 0%, #884060 50%, #682848 100%);
+            border-bottom-color: #481830;
+        }
+
+        .retro-section-titlebar.purple-tb {
+            background: linear-gradient(180deg, #7868A8 0%, #584888 50%, #3A2868 100%);
+            border-bottom-color: #2A1848;
+        }
+
+        .retro-section-body {
+            padding: 1.5rem;
+            background: linear-gradient(180deg, #FBFCFF 0%, #F4F8FF 100%);
+        }
+
+        .retro-section-statusbar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 3px 8px;
+            height: 22px;
+            background: linear-gradient(180deg, #E8E8E8, #D0D0D0);
+            border-top: 2px solid #B0B8C8;
+            font-family: 'VT323', monospace;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .retro-section-statusbar .retro-sb-track {
+            flex: 1;
+            height: 12px;
+            background: #FFF;
+            border: 2px inset #B0B0B0;
+            padding: 1px;
+        }
+
+        .retro-section-statusbar .retro-sb-fill {
+            height: 100%;
+            background: repeating-linear-gradient(90deg, #3A6AA0 0px, #3A6AA0 6px, #4A88C0 6px, #4A88C0 8px);
+        }
+
+        /* ==================== STICKER / TAG COMPONENT ==================== */
+        .sticker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 4px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 0.85rem;
+            border: 2px solid;
+        }
+
+        .sticker.peach { background: rgba(168,207,240,0.25); color: var(--sky-deep); border-color: rgba(168,207,240,0.5); }
+        .sticker.sage { background: rgba(200,232,216,0.3); color: var(--mint-dark); border-color: rgba(200,232,216,0.6); }
+        .sticker.pink { background: rgba(255,224,230,0.35); color: #C08090; border-color: rgba(240,176,184,0.5); }
+        .sticker.lavender { background: rgba(216,208,240,0.3); color: #7868A8; border-color: rgba(216,208,240,0.6); }
+
+        .sticker.has-tooltip {
+            position: relative;
+            cursor: default;
+        }
+
+        .sticker .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #3A5070;
+            color: #E8F4FF;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .sticker .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #3A5070;
+        }
+
+        .sticker.has-tooltip:hover .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* ==================== BUBBLE COMPONENT ==================== */
+        .bubble {
+            background: rgba(255,255,255,0.85);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 1.25rem 1.5rem;
+            position: relative;
+            box-shadow: 2px 2px 0px rgba(70,100,140,0.08);
+        }
+
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 30px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.85);
+            border-right: 2px solid var(--border);
+            border-bottom: 2px solid var(--border);
+            transform: rotate(45deg);
+        }
+
+        /* ==================== HEADER & NAV ==================== */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(232, 244, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(168,207,240,0.4);
+            transition: box-shadow var(--transition);
+        }
+
+        header.scrolled { box-shadow: 0 4px 24px rgba(70, 110, 160, 0.1); }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--sky-deep);
+        }
+
+        .logo-sub {
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-left: 0.5rem;
+            background: rgba(168,207,240,0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
+            border: 1.5px solid rgba(168,207,240,0.35);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 0.15rem;
+        }
+
+        nav a {
+            display: block;
+            padding: 0.4rem 0.75rem;
+            color: var(--text-mid);
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 20px;
+            transition: all var(--transition);
+            border: 1.5px solid transparent;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--sky-deep);
+            background: rgba(168,207,240,0.2);
+            border-color: rgba(168,207,240,0.4);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        .hamburger span {
+            display: block; width: 22px; height: 2.5px;
+            background: var(--sky-deep); border-radius: 2px;
+            transition: all var(--transition);
+        }
+
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            nav {
+                position: fixed;
+                top: 60px; left: 0; right: 0;
+                background: rgba(232, 244, 255, 0.95);
+                backdrop-filter: blur(16px);
+                border-bottom: 2px solid rgba(168,207,240,0.4);
+                padding: 1rem;
+                transform: translateY(-120%);
+                transition: transform var(--transition);
+            }
+            nav.open { transform: translateY(0); }
+            nav ul { flex-direction: column; gap: 0.25rem; }
+            nav a { padding: 0.7rem 1rem; font-size: 1.1rem; }
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section { padding: 4.5rem 1.25rem; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            color: var(--sky-deep);
+            background: #E8F0FF;
+            padding: 0.25rem 0.8rem;
+            border-radius: 4px;
+            border: 2px solid #5A7AA0;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #3A5878;
+            margin-bottom: 0.3rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        /* ==================== HERO (INICIO) — JP RETRO WINDOW ==================== */
+        #inicio {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 60px;
+            background: transparent;
+        }
+
+        .retro-win {
+            max-width: 560px;
+            width: 100%;
+            margin: 0 auto;
+            border: 3px solid #3A5A8A;
+            border-radius: 8px;
+            background: #FFFFFF;
+            box-shadow:
+                6px 6px 0px #2A3A5A,
+                1px 1px 0px #5A7AA0,
+                -1px -1px 0px #8AA8C8;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Corner decorations */
+        .retro-win::before,
+        .retro-win::after {
+            content: '✦';
+            position: absolute;
+            font-size: 10px;
+            color: #A0C0E0;
+            z-index: 5;
+        }
+        .retro-win::before { bottom: 6px; left: 8px; }
+        .retro-win::after { bottom: 6px; right: 8px; }
+
+        /* ---- Title bar ---- */
+        .retro-titlebar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+            height: 28px;
+            background: linear-gradient(180deg, #4A78B0 0%, #2A4A78 50%, #1A3058 100%);
+            border-bottom: 2px solid #1A2848;
+            user-select: none;
+        }
+
+        .retro-titlebar-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding-left: 6px;
+        }
+
+        .retro-icon {
+            font-size: 11px;
+            color: #F0D870;
+            text-shadow: 0 0 4px rgba(240,216,112,0.5);
+        }
+
+        .retro-title-text {
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+            color: #FFFFFF;
+            letter-spacing: 0.04em;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.4);
+        }
+
+        .retro-titlebar-btns {
+            display: flex;
+            gap: 2px;
+            padding-right: 4px;
+        }
+
+        .retro-btn-min,
+        .retro-btn-max,
+        .retro-btn-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            line-height: 1;
+            border: 1px solid rgba(0,0,0,0.3);
+            border-radius: 2px;
+            cursor: default;
+        }
+
+        .retro-btn-min {
+            background: linear-gradient(180deg, #E8E8E8 0%, #C0C0C0 100%);
+            color: #333;
+        }
+        .retro-btn-max {
+            background: linear-gradient(180deg, #E8E8E8 0%, #C0C0C0 100%);
+            color: #333;
+        }
+        .retro-btn-close {
+            background: linear-gradient(180deg, #E88080 0%, #C04040 100%);
+            color: #FFF;
+            border-color: #A03030;
+        }
+
+        /* ---- Menu bar ---- */
+        .retro-menubar {
+            display: flex;
+            gap: 0;
+            padding: 0 2px;
+            height: 22px;
+            align-items: center;
+            background: linear-gradient(180deg, #F0F0F0 0%, #D8D8D8 100%);
+            border-bottom: 1px solid #B0B0B0;
+            font-family: 'VT323', monospace;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .retro-menubar span {
+            padding: 1px 8px;
+            cursor: default;
+        }
+
+        .retro-menubar span:hover {
+            background: #3A5A8A;
+            color: #FFF;
+        }
+
+        /* ---- Address bar ---- */
+        .retro-addressbar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            height: 26px;
+            background: linear-gradient(180deg, #F0F0F0 0%, #E0E0E0 100%);
+            border-bottom: 2px solid #B0B8C8;
+        }
+
+        .retro-addr-label {
+            font-family: 'VT323', monospace;
+            font-size: 12px;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .retro-addr-input {
+            flex: 1;
+            background: #FFFFFF;
+            border: 2px inset #C0C0C0;
+            padding: 1px 6px;
+            font-family: 'VT323', monospace;
+            font-size: 12px;
+            color: var(--text-mid);
+            height: 18px;
+            line-height: 18px;
+            overflow: hidden;
+        }
+
+        .retro-addr-go {
+            width: 20px;
+            height: 18px;
+            background: linear-gradient(180deg, #E0E0E0 0%, #C8C8C8 100%);
+            border: 1px solid #A0A0A0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: #3A5A3A;
+            cursor: default;
+        }
+
+        /* ---- Body ---- */
+        .retro-body {
+            padding: 1.8rem 1.5rem 1.5rem;
+            text-align: center;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(168,207,240,0.08) 0%, transparent 60%),
+                linear-gradient(180deg, #FBFCFF 0%, #F4F8FF 100%);
+            position: relative;
+        }
+
+        /* Subtle scanline effect */
+        .retro-body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 3px,
+                rgba(168,207,240,0.02) 3px,
+                rgba(168,207,240,0.02) 4px
+            );
+            pointer-events: none;
+        }
+
+        .retro-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #D0E6FA, #C8E8D8);
+            margin: 0 auto 1rem;
+            border: 3px solid #3A5A8A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.2rem;
+            position: relative;
+            box-shadow: 3px 3px 0px rgba(42,58,90,0.2);
+        }
+
+        .retro-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px dotted #A0C0E0;
+            animation: spinSlow 20s linear infinite;
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 50%;
+        }
+
+        .retro-name {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 800;
+            color: #2A4A78;
+            margin-bottom: 0;
+            text-shadow: 2px 2px 0px rgba(42,74,120,0.08);
+        }
+
+        .retro-handle {
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            color: #6BAED6;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+        }
+
+        .retro-bio {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-mid);
+            max-width: 400px;
+            margin: 0 auto 1.2rem;
+            line-height: 1.7;
+            background: rgba(168,207,240,0.06);
+            border: 1px dashed #C0D8F0;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+        }
+
+        .retro-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .retro-tag {
+            font-family: 'VT323', monospace;
+            font-size: 0.95rem;
+            padding: 0.2rem 0.65rem;
+            border: 2px solid;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+        }
+
+        .retro-tag.blue {
+            background: #E4F0FF;
+            color: #2A5A8A;
+            border-color: #88B0D8;
+        }
+        .retro-tag.green {
+            background: #E4F8EC;
+            color: #2A6A4A;
+            border-color: #88C8A0;
+        }
+        .retro-tag.purple {
+            background: #F0E8FF;
+            color: #5A3A8A;
+            border-color: #B8A0D8;
+        }
+
+        .retro-cta {
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            background: linear-gradient(180deg, #5A90C8 0%, #3A6AA0 50%, #2A5A90 100%);
+            color: #FFFFFF;
+            border: 2px solid #1A3A68;
+            border-radius: 4px;
+            font-family: 'VT323', monospace;
+            font-size: 1.15rem;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow:
+                2px 2px 0px #1A2848,
+                inset 0 1px 0px rgba(255,255,255,0.25);
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+
+        .retro-cta:hover {
+            background: linear-gradient(180deg, #6AA0D8 0%, #4A7AB0 50%, #3A6AA0 100%);
+            color: #FFFFFF;
+            transform: translate(-1px, -1px);
+            box-shadow:
+                3px 3px 0px #1A2848,
+                inset 0 1px 0px rgba(255,255,255,0.3);
+        }
+
+        .retro-cta:active {
+            transform: translate(1px, 1px);
+            box-shadow:
+                1px 1px 0px #1A2848,
+                inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* ---- Status bar ---- */
+        .retro-statusbar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 3px 8px;
+            height: 24px;
+            background: linear-gradient(180deg, #E8E8E8 0%, #D0D0D0 100%);
+            border-top: 2px solid #B0B8C8;
+            font-family: 'VT323', monospace;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .retro-status-text {
+            white-space: nowrap;
+        }
+
+        .retro-progress {
+            flex: 1;
+        }
+
+        .retro-progress-track {
+            height: 12px;
+            background: #FFFFFF;
+            border: 2px inset #B0B0B0;
+            padding: 1px;
+        }
+
+        .retro-progress-fill {
+            height: 100%;
+            width: 72%;
+            background: repeating-linear-gradient(
+                90deg,
+                #3A6AA0 0px, #3A6AA0 6px,
+                #4A88C0 6px, #4A88C0 8px
+            );
+            animation: retroLoad 2s steps(4) infinite;
+        }
+
+        @keyframes retroLoad {
+            0%, 100% { width: 55%; }
+            50% { width: 90%; }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.55rem 1.5rem;
+            background: linear-gradient(180deg, #5A90C8 0%, #3A6AA0 50%, #2A5A90 100%);
+            color: #FFFFFF;
+            border: 2px solid #1A3A68;
+            border-radius: 4px;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 2px 2px 0px #1A2848, inset 0 1px 0px rgba(255,255,255,0.25);
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: linear-gradient(180deg, #6AA0D8 0%, #4A7AB0 50%, #3A6AA0 100%);
+            color: #FFFFFF;
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px #1A2848, inset 0 1px 0px rgba(255,255,255,0.3);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.7);
+            color: var(--sky-deep);
+        }
+
+        .btn-outline:hover {
+            background: rgba(168,207,240,0.2);
+            color: var(--sky-deep);
+        }
+
+        /* ==================== HISTORIAS ==================== */
+        #historias { background: transparent; }
+
+        .diary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        @media (min-width: 700px) {
+            .diary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .diary-window {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .diary-window .retro-section-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .diary-body {
+            padding: 1rem 1.2rem;
+        }
+
+        .diary-date-tag {
+            font-family: 'VT323', monospace;
+            font-size: 0.95rem;
+            color: var(--sky-deep);
+            background: rgba(168,207,240,0.15);
+            padding: 0.15rem 0.65rem;
+            border-radius: 20px;
+            border: 1.5px solid rgba(168,207,240,0.35);
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .diary-body h3 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #3A5878;
+            margin-bottom: 0.5rem;
+        }
+
+        .diary-body p {
+            color: var(--text-mid);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 0.75rem;
+        }
+
+        .featured-quote {
+            text-align: center;
+            padding: 0.8rem 0.5rem;
+            margin: 0.3rem 0;
+            border: none;
+        }
+
+        .quote-text {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: clamp(16px, 2.5vw, 20px);
+            font-weight: 400;
+            color: #3A5878;
+            line-height: 1.5;
+            font-style: normal;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-author {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        .diary-deco {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        /* ==================== CONTENIDO ==================== */
+        #contenido { background: transparent; }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 600px) { .content-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 900px) { .content-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .content-card {
+            background: rgba(255,255,255,0.85);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition);
+            box-shadow: 0 4px 16px rgba(70,100,140,0.08);
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(70,100,140,0.12);
+            border-color: var(--sky-mid);
+        }
+
+        .content-card-img {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            position: relative;
+        }
+
+        .content-card-img:nth-child(1) {
+            background: linear-gradient(135deg, #D6EAFF, #D4E4F8);
+        }
+
+        .card-peach .content-card-img { background: linear-gradient(135deg, #D0E6FA 0%, #B8D8F4 100%); }
+        .card-sage .content-card-img { background: linear-gradient(135deg, #C8E8D8 0%, #B0D8C4 100%); }
+        .card-lavender .content-card-img { background: linear-gradient(135deg, #D8D0F0 0%, #C8C0E4 100%); }
+
+        .content-card-body {
+            padding: 1rem 1.25rem 1.25rem;
+        }
+
+        .content-card-body h3 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #3A5878;
+        }
+
+        .content-card-body p {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        /* ==================== VOTA ==================== */
+        #vota { background: transparent; }
+
+        .poll-window { max-width: 650px; margin: 0 auto; }
+
+        /* poll content padding handled by .retro-section-body */
+
+        .poll-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .poll-header h3 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #3A5878;
+        }
+
+        .poll-timer {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.95rem;
+            color: var(--sky-deep);
+            background: #E8F0FF;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            border: 2px solid #5A7AA0;
+            white-space: nowrap;
+        }
+
+        .poll-timer svg { width: 14px; height: 14px; fill: currentColor; }
+
+        .poll-option {
+            margin-bottom: 0.85rem;
+            cursor: pointer;
+            padding: 0.65rem 0.85rem;
+            border: 2px solid #8898B0;
+            border-radius: 4px;
+            background: #F0F4F8;
+            transition: all var(--transition);
+        }
+
+        .poll-option:hover:not(.voted) {
+            background: #E0E8F8;
+            border-color: #5A7AA0;
+        }
+
+        .poll-option.voted { cursor: default; }
+
+        .poll-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.35rem;
+        }
+
+        .poll-option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text);
+        }
+
+        .poll-radio {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            border: 2px solid #5A7AA0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+
+        .poll-option:hover:not(.voted) .poll-radio { border-color: #3A6AA0; }
+
+        .poll-option.selected .poll-radio {
+            border-color: #3A6AA0;
+            background: #3A6AA0;
+        }
+
+        .poll-option.selected .poll-radio::after {
+            content: ''; width: 5px; height: 5px;
+            border-radius: 50%; background: var(--white);
+        }
+
+        .poll-percentage {
+            font-family: 'VT323', monospace;
+            font-size: 0.95rem;
+            color: #3A6AA0;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .poll-option.voted .poll-percentage { opacity: 1; }
+
+        .poll-bar-track {
+            width: 100%; height: 14px;
+            background: #FFF;
+            border: 2px inset #B0B0B0;
+            overflow: hidden;
+        }
+
+        .poll-bar-fill {
+            height: 100%;
+            background: repeating-linear-gradient(90deg, #3A6AA0 0px, #3A6AA0 6px, #5A88B8 6px, #5A88B8 8px);
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+
+        .poll-total {
+            text-align: center;
+            margin-top: 1rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .poll-custom-row {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.4rem 0;
+        }
+
+        .poll-custom-input {
+            flex: 1;
+            padding: 0.35rem 0.6rem;
+            border: 2px inset #B0B8C8;
+            border-radius: 4px;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text);
+            background: #FFF;
+            outline: none;
+        }
+
+        .poll-custom-input:focus {
+            border-color: #3A6AA0;
+        }
+
+        .poll-custom-btn {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .poll-custom-btn:disabled {
+            opacity: 0.4;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* ==================== PRODUCTOS ==================== */
+        .product-showcase {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 700px) {
+            .product-showcase {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .product-main-img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 2px solid var(--border);
+            background: rgba(168,207,240,0.1);
+        }
+
+        .product-main-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-thumbs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .product-thumb {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all var(--transition);
+            opacity: 0.6;
+        }
+
+        .product-thumb:hover {
+            opacity: 0.85;
+            border-color: var(--sky-mid);
+        }
+
+        .product-thumb.active {
+            opacity: 1;
+            border-color: #3A6AA0;
+            box-shadow: 0 0 0 2px rgba(58,106,160,0.3);
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .product-detail-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #3A5878;
+            line-height: 1.3;
+        }
+
+        .product-price {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--sky-deep);
+            background: #E8F0FF;
+            padding: 0.25rem 0.8rem;
+            border-radius: 4px;
+            border: 2px solid #3A6AA0;
+            display: inline-block;
+            align-self: flex-start;
+        }
+
+        .product-description {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-mid);
+            line-height: 1.7;
+        }
+
+        .product-description p {
+            margin-bottom: 0.75rem;
+        }
+
+        .product-includes-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #3A5878;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-includes {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .product-includes li {
+            padding-left: 0.25rem;
+            color: var(--text-mid);
+        }
+
+        .product-buy-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .product-buy-btn {
+            font-size: 1.05rem;
+        }
+
+        .btn-stripe {
+            background: linear-gradient(180deg, #7A5AC8 0%, #5A3AA0 50%, #4A2A90 100%);
+            border-color: #2A1A58;
+            box-shadow: 2px 2px 0px #1A1038, inset 0 1px 0px rgba(255,255,255,0.25);
+        }
+
+        .btn-stripe:hover {
+            background: linear-gradient(180deg, #8A6AD8 0%, #6A4AB0 50%, #5A3AA0 100%);
+            box-shadow: 3px 3px 0px #1A1038, inset 0 1px 0px rgba(255,255,255,0.3);
+        }
+
+        /* ==================== CONTACTO ==================== */
+        #contacto { background: transparent; }
+
+        .contact-window { max-width: 750px; margin: 0 auto; }
+
+        /* contact content padding handled by .retro-section-body */
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 700px) { .contact-wrapper { grid-template-columns: 1fr 1fr; } }
+
+        .contact-info p {
+            color: var(--text-mid);
+            margin-bottom: 1.25rem;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-mid);
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            padding: 0.6rem 0.85rem;
+            background: #F0F4F8;
+            border: 2px solid #8898B0;
+            border-radius: 4px;
+            transition: all var(--transition);
+        }
+
+        .contact-link:hover {
+            background: #E0E8F8;
+            border-color: #5A7AA0;
+            color: var(--sky-deep);
+        }
+
+        .contact-link svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
+        .contact-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-img img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 12px;
+            border: 3px solid #3A5A8A;
+            box-shadow: 4px 4px 0px #2A3A5A;
+            object-fit: cover;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 2px inset #B0B8C8;
+            border-radius: 4px;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: #FFF;
+            transition: all var(--transition);
+            outline: none;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #3A6AA0;
+            box-shadow: none;
+        }
+
+        .contact-form textarea { min-height: 110px; resize: vertical; }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            text-align: center;
+            padding: 1.5rem 1.25rem;
+            background: linear-gradient(180deg, #2A4A78, #1A3058);
+            border-top: 3px solid #3A5A8A;
+            color: #A8CFF0;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        footer a { color: #C8E0F8; }
+
+        /* ==================== FLOATING DECORATIONS ==================== */
+        .deco-float {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            font-size: 1.5rem;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .float-anim { animation: floatBounce 3s ease-in-out infinite; }
+
+        /* ==================== SPARKLE CURSOR TRAIL ==================== */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 12px;
+            animation: sparkleFade 0.6s ease-out forwards;
+        }
+
+        @keyframes sparkleFade {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.3) translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header id="header">
+        <div class="header-inner">
+            <a href="#inicio" class="logo">
+                Níobe <span class="logo-sub">@niromun_</span>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#inicio" class="active">Inicio</a></li>
+                    <li><a href="#contenido">Productos</a></li>
+                    <li><a href="#vota">Vota</a></li>
+                    <li><a href="#historias">Rincón</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="washi-tape"></div>
+    </header>
+
+    <!-- ==================== INICIO ==================== -->
+    <section id="inicio">
+        <div class="retro-win fade-in">
+            <!-- Title bar -->
+            <div class="retro-titlebar">
+                <div class="retro-titlebar-left">
+                    <span class="retro-icon">&#x2605;</span>
+                    <span class="retro-title-text">niobe_personal.exe</span>
+                </div>
+                <div class="retro-titlebar-btns">
+                    <span class="retro-btn-min">&#x2500;</span>
+                    <span class="retro-btn-max">&#x25A1;</span>
+                    <span class="retro-btn-close">&#x2715;</span>
+                </div>
+            </div>
+            <!-- Menu bar -->
+            <div class="retro-menubar">
+                <span>File</span>
+                <span>Edit</span>
+                <span>View</span>
+                <span>Favorites</span>
+                <span>Help</span>
+            </div>
+            <!-- Address bar -->
+            <div class="retro-addressbar">
+                <span class="retro-addr-label">Address</span>
+                <div class="retro-addr-input">&#x1F310; https://niobe.com/inicio</div>
+                <span class="retro-addr-go">&#x25B6;</span>
+            </div>
+            <!-- Body -->
+            <div class="retro-body">
+                <div class="retro-avatar float-anim">
+                    <img src="img/niobe-avatar.jpg" alt="Níobe" class="hero-avatar-img">
+                </div>
+                <h1 class="retro-name">Níobe</h1>
+                <p class="retro-handle">@niromun_</p>
+                <p class="retro-bio">♡‧₊˚✧ ¡Bienvenidxs! ✧˚₊‧♡<br>Disfrutad de vuestra estancia con un tecito 🍵<br>Aquí encontraréis mis productitos, votaciones de próximos vídeos o productos, un rincón de inspiración y mi contacto por si queréis que colaboremos !!</p>
+                <div class="retro-tags">
+                    <span class="retro-tag blue">&#x1F4D6; lectora</span>
+                    <span class="retro-tag green">&#x1F331; creadora</span>
+                    <span class="retro-tag purple">&#x270D;&#xFE0F; storyteller</span>
+                </div>
+                <a href="#historias" class="retro-cta">&#x2606; Un rincón de inspiración &#x2606;</a>
+            </div>
+            <!-- Status bar -->
+            <div class="retro-statusbar">
+                <span class="retro-status-text">&#x2714; Done</span>
+                <div class="retro-progress">
+                    <div class="retro-progress-track">
+                        <div class="retro-progress-fill"></div>
+                    </div>
+                </div>
+                <span class="retro-status-text">Loading...</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="hearts-border"></div>
+
+    <!-- ==================== PRODUCTOS ==================== -->
+    <section id="contenido">
+        <div class="container">
+            <span class="section-label fade-in">&#x1F381; tiendita</span>
+            <h2 class="section-title fade-in">Productos</h2>
+            <p class="section-subtitle fade-in">Cositas hechas con cariño ~ disponibles para llevar a casa</p>
+
+            <div class="retro-section fade-in">
+                <div class="retro-section-titlebar">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body">
+                    <div class="product-showcase">
+                        <div class="product-gallery">
+                            <div class="product-main-img">
+                                <img src="img/libreta-portada.jpg" alt="Nuestra libreta - portada" id="productMainImg">
+                            </div>
+                            <div class="product-thumbs">
+                                <img src="img/libreta-portada.jpg" alt="Portada" class="product-thumb active" onclick="changeMainImg(this)">
+                                <img src="img/libreta-interior-luna.jpg" alt="Interior - Fly me to the Moon" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-calendario.jpg" alt="Calendario de citas" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-preguntas.jpg" alt="Preguntitas random" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-cupones.jpg" alt="Cuponcitos" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-dibujos.jpg" alt="Dibujaos el uno al otro" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-sylvanian.jpg" alt="Sylvanian y Smiski" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-enero.jpg" alt="Pagina de enero" class="product-thumb" onclick="changeMainImg(this)">
+                                <img src="img/libreta-contraportada.jpg" alt="Contraportada" class="product-thumb" onclick="changeMainImg(this)">
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-detail-title">Libreta para parejas &mdash; &ldquo;Nuestra libreta&rdquo;</h3>
+                            <span class="product-price">15&euro;</span>
+                            <div class="product-description">
+                                <p>Unas 50 paginas pensadas para crear recuerditos, escribir, dibujar y pasar tiempo de calidad en pareja &#x2661;</p>
+                                <p class="product-includes-title">¿Que incluye?</p>
+                                <ul class="product-includes">
+                                    <li>&#x2726; About me (una para cada uno)</li>
+                                    <li>&#x2726; About us</li>
+                                    <li>&#x2726; Preguntas para responder juntos</li>
+                                    <li>&#x2726; Calendario de citas</li>
+                                    <li>&#x2726; Cupones para planes y detallitos</li>
+                                    <li>&#x2726; Dibujitos para colorear</li>
+                                    <li>&#x2726; Paginas por meses para pegar fotos, tickets, recuerdos...</li>
+                                    <li>&#x2726; Y alguna sorpresita mas &#x2726;</li>
+                                </ul>
+                            </div>
+                            <div class="product-buy-buttons">
+                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=niromun.nio%40gmail.com&amp;amount=15.00&amp;currency_code=EUR&amp;item_name=Libreta%20para%20parejas%20-%20Nuestra%20libreta" target="_blank" rel="noopener" class="btn product-buy-btn">Quiero esta &#x2661;</a>
+                                <a href="https://buy.stripe.com/5kQ3cucKreF9e2C7NsfrW00" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Pagar con Stripe</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hearts-border"></div>
+
+    <!-- ==================== VOTA ==================== -->
+    <section id="vota">
+        <div class="container">
+            <span class="section-label fade-in">&#x1F5F3;&#xFE0F; tu opinion cuenta</span>
+            <h2 class="section-title fade-in">Vota</h2>
+            <p class="section-subtitle fade-in">Tu opinion da forma a lo que viene ~ ¡participa!</p>
+
+            <div class="poll-window retro-section fade-in" id="pollBox">
+                <div class="retro-section-titlebar pink-tb">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> encuesta_activa.poll</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body">
+                    <div class="poll-header">
+                        <h3>¿Sobre qué te gustaría que grabara la próxima semana?</h3>
+                        <div class="poll-timer" id="pollTimer">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+                            <span id="timerText">Cargando...</span>
+                        </div>
+                    </div>
+
+                    <div class="poll-option" data-option="0" onclick="vote(0)">
+                        <div class="poll-option-header">
+                            <span class="poll-option-label">
+                                <span class="poll-radio"></span>
+                                Collage desde cero
+                            </span>
+                            <span class="poll-percentage">0%</span>
+                        </div>
+                        <div class="poll-bar-track"><div class="poll-bar-fill"></div></div>
+                    </div>
+
+                    <div class="poll-option" data-option="1" onclick="vote(1)">
+                        <div class="poll-option-header">
+                            <span class="poll-option-label">
+                                <span class="poll-radio"></span>
+                                Recomendación de libro
+                            </span>
+                            <span class="poll-percentage">0%</span>
+                        </div>
+                        <div class="poll-bar-track"><div class="poll-bar-fill"></div></div>
+                    </div>
+
+                    <div class="poll-option" data-option="2" onclick="vote(2)">
+                        <div class="poll-option-header">
+                            <span class="poll-option-label">
+                                <span class="poll-radio"></span>
+                                Nueva palabra
+                            </span>
+                            <span class="poll-percentage">0%</span>
+                        </div>
+                        <div class="poll-bar-track"><div class="poll-bar-fill"></div></div>
+                    </div>
+
+                    <p class="poll-total">&#x2764;&#xFE0F; <span id="totalVotes">0</span> votos</p>
+                </div>
+                <div class="retro-section-statusbar">
+                    <span>Status: activa</span>
+                    <div class="retro-sb-track"><div class="retro-sb-fill"></div></div>
+                    <span>Loading...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="washi-tape"></div>
+
+    <!-- ==================== HISTORIAS ==================== -->
+    <section id="historias">
+        <div class="container">
+            <span class="section-label fade-in">&#x1F4D6; diario publico</span>
+            <h2 class="section-title fade-in">Un rincón de inspiración</h2>
+            <p class="section-subtitle fade-in">pensamientos, reflexiones y frases inspiradoras ~ una entrada cada semana</p>
+
+            <div class="diary-grid">
+            <!-- Entrada 1 -->
+            <div class="diary-window retro-section fade-in">
+                <div class="retro-section-titlebar green-tb">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_001.txt</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body">
+                    <span class="diary-date-tag">&#x1F4C5; 29 de marzo, 2026</span>
+                    <blockquote class="featured-quote">
+                        <p class="quote-text">&ldquo;Cuando la huerta está bien plantada, al irnos a la cama sabemos que solo es cuestión de tiempo que salgan las flores&rdquo;</p>
+                        <cite class="quote-author">&mdash; Vivir liberado, Michael A. Singer</cite>
+                    </blockquote>
+                    <div class="diary-deco">
+                        <span class="sticker sage">&#x1F33F; reflexion</span>
+                        <span class="sticker peach">&#x2615; slow life</span>
+                    </div>
+                </div>
+                <div class="retro-section-statusbar">
+                    <span>semana 1/&#x221E;</span>
+                </div>
+            </div>
+
+            <!-- Entrada 2 -->
+            <div class="diary-window retro-section fade-in">
+                <div class="retro-section-titlebar green-tb">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_002.txt</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body">
+                    <span class="diary-date-tag">&#x1F4C5; 5 de abril, 2026</span>
+                    <blockquote class="featured-quote">
+                        <p class="quote-text">&ldquo;Recuerda, el pasado no tiene porqu&eacute; ser tambi&eacute;n nuestro futuro&rdquo;</p>
+                        <cite class="quote-author">&mdash; Elantris, Brandon Sanderson</cite>
+                    </blockquote>
+                    <div class="diary-deco">
+                        <span class="sticker sage">&#x2728; fantasia</span>
+                        <span class="sticker peach">&#x1F4AA; superacion</span>
+                    </div>
+                </div>
+                <div class="retro-section-statusbar">
+                    <span>semana 2/&#x221E;</span>
+                </div>
+            </div>
+
+            <!-- Entrada 3 -->
+            <div class="diary-window retro-section fade-in">
+                <div class="retro-section-titlebar green-tb">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_003.txt</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body">
+                    <span class="diary-date-tag">&#x1F4C5; 12 de abril, 2026</span>
+                    <blockquote class="featured-quote">
+                        <p class="quote-text">&ldquo;El culpable del caos de nuestras vidas, si es que hay alguno, tan solo somos nosotros&rdquo;</p>
+                        <cite class="quote-author">&mdash; El libro de los Baltimore, Jo&euml;l Dicker</cite>
+                    </blockquote>
+                    <div class="diary-deco">
+                        <span class="sticker sage">&#x1F3AD; drama</span>
+                        <span class="sticker peach">&#x1F319; nostalgia</span>
+                    </div>
+                </div>
+                <div class="retro-section-statusbar">
+                    <span>semana 3/&#x221E;</span>
+                </div>
+            </div>
+            </div><!-- /diary-grid -->
+        </div>
+    </section>
+
+    <div class="washi-tape green"></div>
+
+    <!-- ==================== CONTACTO ==================== -->
+    <section id="contacto">
+        <div class="container">
+            <span class="section-label fade-in">&#x1F48C; escríbeme</span>
+            <h2 class="section-title fade-in">Contacto</h2>
+            <p class="section-subtitle fade-in">¿Quieres colaborar, contarme algo o simplemente saludar?</p>
+
+            <div class="contact-window retro-section fade-in">
+                <div class="retro-section-titlebar purple-tb">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> nuevo_mensaje.mail</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body">
+                    <div class="contact-wrapper">
+                        <div class="contact-info">
+                            <p>¿A quién no le gusta recibir mensajes? Te aseguro que a mí sí, y más si quieres que colaboremos juntos!! O si tienes alguna duda, idea o simplemente quieres decirme hola, este es el lugar para hacerlo 🌟</p>
+                            <div class="contact-links">
+                                <a href="https://www.instagram.com/niromun_/" target="_blank" rel="noopener" class="contact-link">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                                    @niromun_
+                                </a>
+                                <a href="https://www.tiktok.com/@niromun_" target="_blank" rel="noopener" class="contact-link">
+                                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.51a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.48a8.27 8.27 0 004.76 1.51v-3.45a4.85 4.85 0 01-1-.15z"/></svg>
+                                    @niromun_
+                                </a>
+                                <a href="https://mail.google.com/mail/?view=cm&amp;to=niromun.nio@gmail.com" target="_blank" rel="noopener" class="contact-link">
+                                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                    niromun.nio@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                        <div class="contact-img">
+                            <img src="img/contacto.jpg" alt="Contacto">
+                        </div>
+                    </div>
+                </div>
+                <div class="retro-section-statusbar">
+                    <span>Ready</span>
+                    <div class="retro-sb-track"><div class="retro-sb-fill" style="width: 100%"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="washi-tape green"></div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <p>&#x2764;&#xFE0F; 2026 Níobe — <a href="#">@niromun_</a> — hecho con cariño y muchas tazas de te &#x2615;</p>
+    </footer>
+
+    <!-- ==================== FIREBASE SDK ==================== -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ===== FIREBASE INIT =====
+        var firebaseConfig = {
+            apiKey: "AIzaSyBiPlttAGLQ7hS_uS0y6Ph40QKSkTyKAjQ",
+            authDomain: "niromun-web.firebaseapp.com",
+            databaseURL: "https://niromun-web-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "niromun-web",
+            storageBucket: "niromun-web.firebasestorage.app",
+            messagingSenderId: "23400012185",
+            appId: "1:23400012185:web:3098ff9f38f84a684e1b08",
+            measurementId: "G-DNQ7DX29KQ"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.database();
+        // ===== NAV =====
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        const header = document.getElementById('header');
+        const navLinks = document.querySelectorAll('nav a');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            nav.classList.toggle('open');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                nav.classList.remove('open');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('section');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const top = section.offsetTop - 100;
+                if (window.scrollY >= top) current = section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+
+        // ===== FADE IN ON SCROLL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ===== SPARKLE TRAIL =====
+        const sparkles = ['\u2729', '\u2606', '\u00B7'];
+        let lastSparkle = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastSparkle < 120) return;
+            lastSparkle = now;
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            s.style.left = e.clientX + 'px';
+            s.style.top = e.clientY + 'px';
+            s.style.color = ['#A8CFF0', '#C8E8D8', '#D8D0F0', '#F0C8D0'][Math.floor(Math.random() * 4)];
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 600);
+        });
+
+        // ===== POLL SYSTEM (Firebase Realtime) =====
+        var POLL_ID = 'niobe_poll_003';
+        var POLL_CREATED = '2026-03-29';
+        var POLL_DURATION_DAYS = 30;
+        var NUM_OPTIONS = 3;
+        var pollRef = db.ref('polls/' + POLL_ID + '/votes');
+        var pollVoting = false;
+
+        function getChosenOption() {
+            var v = localStorage.getItem(POLL_ID + '_choice');
+            return v !== null ? parseInt(v) : -1;
+        }
+
+        function setChoice(idx) {
+            localStorage.setItem(POLL_ID + '_choice', idx.toString());
+        }
+
+        function updatePollUI(votes) {
+            var total = 0;
+            for (var i = 0; i < NUM_OPTIONS; i++) total += (votes[i] || 0);
+
+            var options = document.querySelectorAll('.poll-option[data-option]');
+            var chosen = getChosenOption();
+
+            options.forEach(function(opt) {
+                var idx = parseInt(opt.getAttribute('data-option'));
+                var count = votes[idx] || 0;
+                var pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                var bar = opt.querySelector('.poll-bar-fill');
+                var label = opt.querySelector('.poll-percentage');
+
+                bar.style.width = pct + '%';
+                label.textContent = pct + '%';
+
+                opt.classList.remove('selected');
+                if (chosen >= 0) {
+                    opt.classList.add('voted');
+                    label.style.opacity = '1';
+                    if (idx === chosen) opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('voted');
+                    label.style.opacity = '0';
+                }
+            });
+
+            document.getElementById('totalVotes').textContent = total;
+        }
+
+        function vote(optionIndex) {
+            var prev = getChosenOption();
+            if (prev === optionIndex || pollVoting) return;
+            pollVoting = true;
+
+            // Set choice immediately so UI updates correctly when Firebase fires
+            setChoice(optionIndex);
+
+            // Use transaction for atomic read-modify-write
+            pollRef.transaction(function(currentVotes) {
+                if (currentVotes === null) {
+                    currentVotes = {};
+                    for (var j = 0; j < NUM_OPTIONS; j++) currentVotes[j] = 0;
+                }
+                // Subtract previous vote
+                if (prev >= 0 && (currentVotes[prev] || 0) > 0) {
+                    currentVotes[prev] = (currentVotes[prev] || 0) - 1;
+                }
+                // Add new vote
+                currentVotes[optionIndex] = (currentVotes[optionIndex] || 0) + 1;
+                return currentVotes;
+            }, function(error, committed) {
+                pollVoting = false;
+                if (error) {
+                    console.error('Vote error:', error);
+                    // Revert choice on error
+                    if (prev >= 0) setChoice(prev);
+                    else localStorage.removeItem(POLL_ID + '_choice');
+                }
+            });
+        }
+
+        // Listen for real-time updates from Firebase
+        pollRef.on('value', function(snapshot) {
+            var data = snapshot.val();
+            var votes = [];
+            for (var i = 0; i < NUM_OPTIONS; i++) {
+                votes[i] = (data && data[i]) ? data[i] : 0;
+            }
+            updatePollUI(votes);
+        });
+
+        // Initialize votes in Firebase if they don't exist
+        pollRef.once('value', function(snapshot) {
+            if (!snapshot.exists()) {
+                var init = {};
+                for (var i = 0; i < NUM_OPTIONS; i++) init[i] = 0;
+                pollRef.set(init).then(function() {
+                    console.log('Poll initialized in Firebase');
+                }).catch(function(err) {
+                    console.error('Poll init error:', err);
+                });
+            }
+        });
+
+        // Timer
+        function updateTimer() {
+            var created = new Date(POLL_CREATED + 'T00:00:00');
+            var deadline = new Date(created.getTime() + POLL_DURATION_DAYS * 24 * 60 * 60 * 1000);
+            var now = new Date();
+            var diff = deadline - now;
+
+            if (diff <= 0) {
+                document.getElementById('timerText').textContent = 'Encuesta cerrada';
+                document.querySelectorAll('.poll-option').forEach(function(opt) {
+                    opt.setAttribute('onclick', '');
+                });
+                return;
+            }
+
+            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            if (days > 0) {
+                document.getElementById('timerText').textContent = days + (days === 1 ? ' dia' : ' dias') + ' restante' + (days === 1 ? '' : 's');
+            } else {
+                document.getElementById('timerText').textContent = hours + 'h restantes';
+            }
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 60000);
+
+        // ===== CONTACT FORM =====
+        // ===== PRODUCT GALLERY =====
+        function changeMainImg(thumb) {
+            document.getElementById('productMainImg').src = thumb.src;
+            document.getElementById('productMainImg').alt = thumb.alt;
+            document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+
+        function handleContact(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '¡Mensaje enviado! &#x2728;';
+            btn.style.background = 'var(--sage-dark)';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                e.target.reset();
+            }, 2500);
+            return false;
+        }
+    </script>
+</body>
+</html>

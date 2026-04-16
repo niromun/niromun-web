@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv \"libreta-calendario.jpg.jpg\" \"libreta-calendario.jpg\")",
+      "Bash(mv \"libreta-contraportada.jpg.jpg\" \"libreta-contraportada.jpg\")",
+      "Bash(mv \"libreta-preguntas-jpg\" \"libreta-preguntas.jpg\")"
+    ]
+  }
+}
