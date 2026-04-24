@@ -1602,51 +1602,15 @@
             <h2 class="section-title fade-in">Productos</h2>
             <p class="section-subtitle fade-in">Cositas hechas con cariño ~ disponibles para llevar a casa</p>
 
-            <div class="retro-section fade-in">
-                <div class="retro-section-titlebar">
-                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div>
-                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
-                </div>
-                <div class="retro-section-body">
-                    <div class="product-showcase">
-                        <div class="product-gallery">
-                            <div class="product-main-img">
-                                <img src="img/libreta-portada.jpg" alt="Nuestra libreta - portada" id="productMainImg">
-                            </div>
-                            <div class="product-thumbs">
-                                <img src="img/libreta-portada.jpg" alt="Portada" class="product-thumb active" onclick="changeMainImg(this)">
-                                <img src="img/libreta-interior-luna.jpg" alt="Interior - Fly me to the Moon" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-calendario.jpg" alt="Calendario de citas" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-preguntas.jpg" alt="Preguntitas random" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-cupones.jpg" alt="Cuponcitos" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-dibujos.jpg" alt="Dibujaos el uno al otro" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-sylvanian.jpg" alt="Sylvanian y Smiski" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-enero.jpg" alt="Pagina de enero" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/libreta-contraportada.jpg" alt="Contraportada" class="product-thumb" onclick="changeMainImg(this)">
-                                <img src="img/pareja.png" alt="Pareja" class="product-thumb" onclick="changeMainImg(this)">
-                            </div>
-                        </div>
-                        <div class="product-details">
-                            <h3 class="product-detail-title">Libreta para parejas &mdash; &ldquo;Nuestra libreta&rdquo;</h3>
-                            <span class="product-price">15&euro;</span>
-                            <div class="product-description">
-                                <p>Unas 50 paginas pensadas para crear recuerditos, escribir, dibujar y pasar tiempo de calidad en pareja &#x2661;</p>
-                                <p class="product-includes-title">¿Que incluye?</p>
-                                <ul class="product-includes">
-                                    <li>&#x2726; About me (una para cada uno)</li>
-                                    <li>&#x2726; About us</li>
-                                    <li>&#x2726; Preguntas para responder juntos</li>
-                                    <li>&#x2726; Calendario de citas</li>
-                                    <li>&#x2726; Cupones para planes y detallitos</li>
-                                    <li>&#x2726; Dibujitos para colorear</li>
-                                    <li>&#x2726; Paginas por meses para pegar fotos, tickets, recuerdos...</li>
-                                    <li>&#x2726; Y alguna sorpresita mas &#x2726;</li>
-                                </ul>
-                            </div>
-                            <div class="product-buy-buttons">
-                                <a href="https://buy.stripe.com/5kQ3cucKreF9e2C7NsfrW00" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">♡ Quiero esta ♡</a>
-                            </div>
-                        </div>
+            <!-- Products loaded dynamically from Supabase -->
+            <div id="productsContainer">
+                <div class="retro-section fade-in">
+                    <div class="retro-section-titlebar">
+                        <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div>
+                        <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                    </div>
+                    <div class="retro-section-body">
+                        <p style="text-align:center; padding:2rem; color:var(--text-mid); font-family:'M PLUS Rounded 1c',sans-serif;">✧ Cargando productos... ✧</p>
                     </div>
                 </div>
             </div>
@@ -1874,6 +1838,10 @@
         <p>&#x2764;&#xFE0F; 2026 Níobe — <a href="#">@niromun_</a> — hecho con cariño y muchas tazas de te &#x2615;</p>
     </footer>
 
+    <!-- ==================== SUPABASE SDK ==================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+
     <!-- ==================== FIREBASE SDK ==================== -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -2087,13 +2055,108 @@
         setInterval(updateTimer, 60000);
 
         // ===== CONTACT FORM =====
-        // ===== PRODUCT GALLERY =====
-        function changeMainImg(thumb) {
-            document.getElementById('productMainImg').src = thumb.src;
-            document.getElementById('productMainImg').alt = thumb.alt;
-            document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+        // ===== PRODUCT GALLERY (dynamic) =====
+        function changeMainImg(thumb, productId) {
+            var mainImg = document.querySelector('#product-' + productId + ' .product-main-img img');
+            if (mainImg) {
+                mainImg.src = thumb.src;
+                mainImg.alt = thumb.alt;
+            }
+            thumb.closest('.product-thumbs').querySelectorAll('.product-thumb').forEach(function(t) { t.classList.remove('active'); });
             thumb.classList.add('active');
         }
+
+        // ===== LOAD PRODUCTS FROM SUPABASE =====
+        async function loadProducts() {
+            var container = document.getElementById('productsContainer');
+            try {
+                var { data: products, error } = await supabaseClient
+                    .from('products')
+                    .select('*');
+
+                if (error) throw error;
+                if (!products || products.length === 0) {
+                    container.innerHTML = '<div class="retro-section fade-in visible"><div class="retro-section-titlebar"><div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div><div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div></div><div class="retro-section-body"><p style="text-align:center;padding:2rem;color:var(--text-mid);font-family:M PLUS Rounded 1c,sans-serif;">✧ No hay productos disponibles por ahora ~ vuelve pronto ✧</p></div></div>';
+                    return;
+                }
+
+                var html = '';
+                products.forEach(function(product, index) {
+                    var images = product.images || [];
+                    var mainImage = images.length > 0 ? images[0] : '';
+                    var pid = 'product-' + index;
+
+                    // Build description with line breaks
+                    var desc = (product.description || '').replace(/\n/g, '<br>');
+
+                    // Build button
+                    var buttonHtml = '';
+                    if (product.type === 'fisico' && (product.stock === 0 || product.stock === null)) {
+                        buttonHtml = '<span class="btn product-buy-btn" style="opacity:0.5;cursor:not-allowed;pointer-events:none;">Agotado</span>';
+                    } else if (product.type === 'digital') {
+                        buttonHtml = '<a href="' + (product.buy_url || '#') + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">♡ Descargar ♡</a>';
+                    } else {
+                        buttonHtml = '<a href="' + (product.buy_url || '#') + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">♡ Quiero esta ♡</a>';
+                    }
+
+                    // Build thumbnails
+                    var thumbsHtml = '';
+                    images.forEach(function(img, i) {
+                        var activeClass = i === 0 ? ' active' : '';
+                        thumbsHtml += '<img src="' + img + '" alt="' + (product.name || 'Producto') + ' - imagen ' + (i+1) + '" class="product-thumb' + activeClass + '" onclick="changeMainImg(this, \'' + pid + '\')">';
+                    });
+
+                    // Build price
+                    var priceHtml = product.price != null ? product.price + '€' : '';
+
+                    html += '<div class="retro-section fade-in" id="' + pid + '" style="margin-bottom:1.5rem;">';
+                    html += '<div class="retro-section-titlebar">';
+                    html += '<div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div>';
+                    html += '<div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>';
+                    html += '</div>';
+                    html += '<div class="retro-section-body">';
+                    html += '<div class="product-showcase">';
+
+                    // Gallery
+                    html += '<div class="product-gallery">';
+                    html += '<div class="product-main-img">';
+                    if (mainImage) {
+                        html += '<img src="' + mainImage + '" alt="' + (product.name || 'Producto') + '">';
+                    }
+                    html += '</div>';
+                    if (images.length > 1) {
+                        html += '<div class="product-thumbs">' + thumbsHtml + '</div>';
+                    }
+                    html += '</div>';
+
+                    // Details
+                    html += '<div class="product-details">';
+                    html += '<h3 class="product-detail-title">' + (product.name || '') + '</h3>';
+                    if (priceHtml) html += '<span class="product-price">' + priceHtml + '</span>';
+                    html += '<div class="product-description"><p>' + desc + '</p></div>';
+                    html += '<div class="product-buy-buttons">' + buttonHtml + '</div>';
+                    html += '</div>';
+
+                    html += '</div>'; // product-showcase
+                    html += '</div>'; // retro-section-body
+                    html += '</div>'; // retro-section
+                });
+
+                container.innerHTML = html;
+
+                // Re-observe fade-in elements
+                container.querySelectorAll('.fade-in').forEach(function(el) {
+                    observer.observe(el);
+                });
+
+            } catch (err) {
+                console.error('Error loading products:', err);
+                container.innerHTML = '<div class="retro-section fade-in visible"><div class="retro-section-titlebar"><div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div><div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div></div><div class="retro-section-body"><p style="text-align:center;padding:2rem;color:var(--text-mid);font-family:M PLUS Rounded 1c,sans-serif;">✧ No se pudieron cargar los productos ~ inténtalo de nuevo más tarde ✧</p></div></div>';
+            }
+        }
+
+        // Load products on page ready
+        loadProducts();
 
         function handleContact(e) {
             e.preventDefault();
