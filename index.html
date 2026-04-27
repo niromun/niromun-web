@@ -2825,7 +2825,7 @@
 
             // Save slugs before checkout (for #gracias page)
             var slugsList = _cart.map(function(i) { return i.slug; });
-            try { localStorage.setItem('niobe_ultima_compra', JSON.stringify(slugsList)); } catch(e) {}
+            try { localStorage.setItem('ultimaCompra', JSON.stringify(slugsList)); } catch(e) {}
 
             // Disable button and show loading
             btn.disabled = true;
@@ -2935,24 +2935,19 @@
                     // Read what was purchased before clearing
                     var ultimaCompra = [];
                     try {
-                        var raw = localStorage.getItem('niobe_ultima_compra');
+                        var raw = localStorage.getItem('ultimaCompra');
                         if (raw) ultimaCompra = JSON.parse(raw);
                     } catch(e) {}
 
-                    // Clear the cart
+                    // Clear the cart and the purchase record
                     _cart = [];
                     saveCart();
                     updateBadge();
+                    try { localStorage.removeItem('ultimaCompra'); } catch(e) {}
 
-                    // Determine what was bought
+                    // Show only the blocks matching the purchased slugs
                     var hasDigital = ultimaCompra.indexOf('carnet-raton-biblioteca') !== -1;
                     var hasFisico = ultimaCompra.indexOf('libreta-parejas') !== -1;
-
-                    // If no ultima compra data, show both as fallback
-                    if (ultimaCompra.length === 0) {
-                        hasDigital = true;
-                        hasFisico = true;
-                    }
 
                     var digitalBlock = document.getElementById('graciasDigitalBlock');
                     var fisicoBlock = document.getElementById('graciasFisicoBlock');
