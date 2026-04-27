@@ -904,92 +904,119 @@
         /* ==================== HISTORIAS ==================== */
         #historias { background: transparent; }
 
-        .diary-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            align-items: stretch;
+        /* ==================== QUOTE CAROUSEL ==================== */
+        .quote-carousel {
+            position: relative;
+            max-width: 680px;
+            margin: 0 auto;
         }
 
-        @media (min-width: 700px) {
-            .diary-grid { grid-template-columns: repeat(2, 1fr); }
+        .quote-carousel-track {
+            overflow: hidden;
+            border-radius: var(--radius);
         }
 
-        .diary-window {
-            margin-bottom: 0;
+        .quote-carousel-slides {
             display: flex;
-            flex-direction: column;
+            transition: transform 0.45s cubic-bezier(.4,0,.2,1);
         }
 
-        .diary-window .retro-section-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .diary-body {
-            padding: 1rem 1.2rem;
-        }
-
-        .diary-date-tag {
-            font-family: 'VT323', monospace;
-            font-size: 0.95rem;
-            color: var(--sky-deep);
-            background: rgba(168,207,240,0.15);
-            padding: 0.15rem 0.65rem;
-            border-radius: 20px;
-            border: 1.5px solid rgba(168,207,240,0.35);
-            display: inline-block;
-            margin-bottom: 0.75rem;
-        }
-
-        .diary-body h3 {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #3A5878;
-            margin-bottom: 0.5rem;
-        }
-
-        .diary-body p {
-            color: var(--text-mid);
-            font-size: 0.95rem;
-            line-height: 1.8;
-            margin-bottom: 0.75rem;
-        }
-
-        .featured-quote {
+        .quote-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 2.5rem 2rem 2rem;
             text-align: center;
-            padding: 0.8rem 0.5rem;
-            margin: 0.3rem 0;
-            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .quote-text {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: clamp(16px, 2.5vw, 20px);
+        .quote-slide-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.05rem, 3vw, 1.35rem);
+            font-style: italic;
             font-weight: 400;
             color: #3A5878;
-            line-height: 1.5;
-            font-style: normal;
-            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            max-width: 540px;
         }
 
-        .quote-author {
+        .quote-slide-source {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            font-style: normal;
-            font-weight: 400;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-mid);
+            margin-bottom: 0.4rem;
         }
 
-        .diary-deco {
+        .quote-slide-meta {
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Arrows */
+        .quote-carousel-arrows {
+            position: absolute;
+            top: 50%;
+            left: 0; right: 0;
+            transform: translateY(-50%);
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 0.5rem;
+            justify-content: space-between;
+            pointer-events: none;
+            padding: 0 0.3rem;
+        }
+        @media (min-width: 700px) {
+            .quote-carousel-arrows { padding: 0; left: -48px; right: -48px; }
+        }
+
+        .quote-arrow {
+            pointer-events: auto;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border-dark);
+            background: rgba(255,255,255,0.9);
+            color: var(--sky-deep);
+            font-size: 16px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            box-shadow: 2px 2px 0px rgba(70,100,140,0.1);
+        }
+        .quote-arrow:hover {
+            background: rgba(168,207,240,0.25);
+            border-color: var(--sky-deep);
+            transform: scale(1.08);
+        }
+        .quote-arrow:active { transform: scale(0.95); }
+
+        /* Dots */
+        .quote-carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.45rem;
+            margin-top: 1rem;
+        }
+
+        .quote-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border-dark);
+            background: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 0;
+        }
+        .quote-dot.active {
+            background: var(--sky-deep);
+            border-color: var(--sky-deep);
+            transform: scale(1.2);
+        }
+        .quote-dot:hover:not(.active) {
+            background: rgba(168,207,240,0.4);
         }
 
         /* ==================== CONTENIDO ==================== */
@@ -2082,116 +2109,61 @@
             <h2 class="section-title fade-in">Un rincón de inspiración</h2>
             <p class="section-subtitle fade-in">pensamientos, reflexiones y frases inspiradoras ~ una entrada cada semana</p>
 
-            <div class="diary-grid">
-            <!-- Entrada 1 -->
-            <div class="diary-window retro-section fade-in">
+            <div class="retro-section fade-in" style="max-width:720px;margin:0 auto;">
                 <div class="retro-section-titlebar green-tb">
-                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_001.txt</div>
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_frases.txt</div>
                     <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
                 </div>
-                <div class="retro-section-body">
-                    <span class="diary-date-tag">&#x1F4C5; 29 de marzo, 2026</span>
-                    <blockquote class="featured-quote">
-                        <p class="quote-text">&ldquo;Cuando la huerta está bien plantada, al irnos a la cama sabemos que solo es cuestión de tiempo que salgan las flores&rdquo;</p>
-                        <cite class="quote-author">&mdash; Vivir liberado, Michael A. Singer</cite>
-                    </blockquote>
-                    <div class="diary-deco">
-                        <span class="sticker sage">&#x1F33F; reflexion</span>
-                        <span class="sticker peach">&#x2615; slow life</span>
-                    </div>
-                </div>
-                <div class="retro-section-statusbar">
-                    <span>semana 1/&#x221E;</span>
-                </div>
-            </div>
+                <div class="retro-section-body" style="padding:0;">
+                    <div class="quote-carousel" id="quoteCarousel">
+                        <div class="quote-carousel-track">
+                            <div class="quote-carousel-slides" id="quoteSlides">
 
-            <!-- Entrada 2 -->
-            <div class="diary-window retro-section fade-in">
-                <div class="retro-section-titlebar green-tb">
-                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_002.txt</div>
-                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
-                </div>
-                <div class="retro-section-body">
-                    <span class="diary-date-tag">&#x1F4C5; 5 de abril, 2026</span>
-                    <blockquote class="featured-quote">
-                        <p class="quote-text">&ldquo;Recuerda, el pasado no tiene porqu&eacute; ser tambi&eacute;n nuestro futuro&rdquo;</p>
-                        <cite class="quote-author">&mdash; Elantris, Brandon Sanderson</cite>
-                    </blockquote>
-                    <div class="diary-deco">
-                        <span class="sticker sage">&#x2728; fantasia</span>
-                        <span class="sticker peach">&#x1F4AA; superacion</span>
-                    </div>
-                </div>
-                <div class="retro-section-statusbar">
-                    <span>semana 2/&#x221E;</span>
-                </div>
-            </div>
+                                <div class="quote-slide">
+                                    <p class="quote-slide-text">&ldquo;Cuando la huerta est&aacute; bien plantada, al irnos a la cama sabemos que solo es cuesti&oacute;n de tiempo que salgan las flores&rdquo;</p>
+                                    <span class="quote-slide-source">Vivir liberado &middot; Michael A. Singer</span>
+                                    <span class="quote-slide-meta">29 de marzo, 2026 &middot; semana 1/&#x221E;</span>
+                                </div>
 
-            <!-- Entrada 3 -->
-            <div class="diary-window retro-section fade-in">
-                <div class="retro-section-titlebar green-tb">
-                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_003.txt</div>
-                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
-                </div>
-                <div class="retro-section-body">
-                    <span class="diary-date-tag">&#x1F4C5; 12 de abril, 2026</span>
-                    <blockquote class="featured-quote">
-                        <p class="quote-text">&ldquo;El culpable del caos de nuestras vidas, si es que hay alguno, tan solo somos nosotros&rdquo;</p>
-                        <cite class="quote-author">&mdash; El libro de los Baltimore, Jo&euml;l Dicker</cite>
-                    </blockquote>
-                    <div class="diary-deco">
-                        <span class="sticker sage">&#x1F3AD; drama</span>
-                        <span class="sticker peach">&#x1F319; nostalgia</span>
-                    </div>
-                </div>
-                <div class="retro-section-statusbar">
-                    <span>semana 3/&#x221E;</span>
-                </div>
-            </div>
+                                <div class="quote-slide">
+                                    <p class="quote-slide-text">&ldquo;Recuerda, el pasado no tiene porqu&eacute; ser tambi&eacute;n nuestro futuro&rdquo;</p>
+                                    <span class="quote-slide-source">Elantris &middot; Brandon Sanderson</span>
+                                    <span class="quote-slide-meta">5 de abril, 2026 &middot; semana 2/&#x221E;</span>
+                                </div>
 
-            <!-- Entrada 4 -->
-            <div class="diary-window retro-section fade-in">
-                <div class="retro-section-titlebar green-tb">
-                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_004.txt</div>
-                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
-                </div>
-                <div class="retro-section-body">
-                    <span class="diary-date-tag">&#x1F4C5; 19 de abril, 2026</span>
-                    <blockquote class="featured-quote">
-                        <p class="quote-text">&ldquo;Vive el presente con un ojo en el futuro&rdquo;</p>
-                        <cite class="quote-author">&mdash; Noriko Morishita</cite>
-                    </blockquote>
-                    <div class="diary-deco">
-                        <span class="sticker sage">&#x1F33F; mindfulness</span>
-                        <span class="sticker peach">&#x2615; slow life</span>
+                                <div class="quote-slide">
+                                    <p class="quote-slide-text">&ldquo;El culpable del caos de nuestras vidas, si es que hay alguno, tan solo somos nosotros&rdquo;</p>
+                                    <span class="quote-slide-source">El libro de los Baltimore &middot; Jo&euml;l Dicker</span>
+                                    <span class="quote-slide-meta">12 de abril, 2026 &middot; semana 3/&#x221E;</span>
+                                </div>
+
+                                <div class="quote-slide">
+                                    <p class="quote-slide-text">&ldquo;Vive el presente con un ojo en el futuro&rdquo;</p>
+                                    <span class="quote-slide-source">Noriko Morishita</span>
+                                    <span class="quote-slide-meta">19 de abril, 2026 &middot; semana 4/&#x221E;</span>
+                                </div>
+
+                                <div class="quote-slide">
+                                    <p class="quote-slide-text">&ldquo;Ten&iacute;a muchos motivos para quedarse donde estaba. Pero uno para moverse&rdquo;</p>
+                                    <span class="quote-slide-source">El ritmo de la guerra &middot; Brandon Sanderson</span>
+                                    <span class="quote-slide-meta">26 de abril, 2026 &middot; semana 5/&#x221E;</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="quote-carousel-arrows">
+                            <button class="quote-arrow" id="quotePrev" aria-label="Anterior">&lt;</button>
+                            <button class="quote-arrow" id="quoteNext" aria-label="Siguiente">&gt;</button>
+                        </div>
+                        <div class="quote-carousel-dots" id="quoteDots"></div>
                     </div>
                 </div>
                 <div class="retro-section-statusbar">
-                    <span>semana 4/&#x221E;</span>
+                    <span id="quoteStatusText">semana 5/&#x221E;</span>
+                    <div class="retro-sb-track"><div class="retro-sb-fill" id="quoteProgress" style="width:100%"></div></div>
+                    <span>&#x2728;</span>
                 </div>
             </div>
-            <!-- Entrada 5 -->
-            <div class="diary-window retro-section fade-in">
-                <div class="retro-section-titlebar green-tb">
-                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> diario_entrada_005.txt</div>
-                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
-                </div>
-                <div class="retro-section-body">
-                    <span class="diary-date-tag">&#x1F4C5; 26 de abril, 2026</span>
-                    <blockquote class="featured-quote">
-                        <p class="quote-text">&ldquo;Ten&iacute;a muchos motivos para quedarse donde estaba. Pero uno para moverse&rdquo;</p>
-                        <cite class="quote-author">&mdash; El ritmo de la guerra, Brandon Sanderson</cite>
-                    </blockquote>
-                    <div class="diary-deco">
-                        <span class="sticker sage">&#x2728; fantasia</span>
-                        <span class="sticker peach">&#x1F4AA; superacion</span>
-                    </div>
-                </div>
-                <div class="retro-section-statusbar">
-                    <span>semana 5/&#x221E;</span>
-                </div>
-            </div>
-            </div><!-- /diary-grid -->
         </div>
     </section>
 
@@ -2918,6 +2890,72 @@
                 closeCart();
             }
         });
+
+        // ===== QUOTE CAROUSEL =====
+        (function() {
+            var slides = document.querySelectorAll('#quoteSlides .quote-slide');
+            var track = document.getElementById('quoteSlides');
+            var dotsContainer = document.getElementById('quoteDots');
+            var prevBtn = document.getElementById('quotePrev');
+            var nextBtn = document.getElementById('quoteNext');
+            var statusText = document.getElementById('quoteStatusText');
+            var progressBar = document.getElementById('quoteProgress');
+            var total = slides.length;
+            var current = total - 1; // Start at the latest (most recent)
+
+            // Build dots
+            for (var i = 0; i < total; i++) {
+                var dot = document.createElement('button');
+                dot.className = 'quote-dot';
+                dot.setAttribute('aria-label', 'Frase ' + (i + 1));
+                dot.dataset.index = i;
+                dotsContainer.appendChild(dot);
+            }
+            var dots = dotsContainer.querySelectorAll('.quote-dot');
+
+            function goTo(index) {
+                if (index < 0) index = total - 1;
+                if (index >= total) index = 0;
+                current = index;
+                track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                dots.forEach(function(d, di) {
+                    d.classList.toggle('active', di === current);
+                });
+                // Update status bar
+                var weekNum = current + 1;
+                statusText.textContent = 'semana ' + weekNum + '/\u221E';
+                progressBar.style.width = ((weekNum / total) * 100) + '%';
+            }
+
+            prevBtn.addEventListener('click', function() { goTo(current - 1); });
+            nextBtn.addEventListener('click', function() { goTo(current + 1); });
+            dotsContainer.addEventListener('click', function(e) {
+                var dot = e.target.closest('.quote-dot');
+                if (dot) goTo(parseInt(dot.dataset.index, 10));
+            });
+
+            // Swipe support
+            var startX = 0, startY = 0, isDragging = false;
+            var carousel = document.getElementById('quoteCarousel');
+            carousel.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isDragging = true;
+            }, { passive: true });
+            carousel.addEventListener('touchend', function(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                var dx = e.changedTouches[0].clientX - startX;
+                var dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+                    if (dx < 0) goTo(current + 1);
+                    else goTo(current - 1);
+                }
+            }, { passive: true });
+
+            // Init
+            goTo(current);
+        })();
 
         // ===== INIT CART ON LOAD =====
         loadCartFromStorage();
