@@ -1510,6 +1510,147 @@
             0% { opacity: 1; transform: scale(1) translateY(0); }
             100% { opacity: 0; transform: scale(0.3) translateY(-20px); }
         }
+
+        /* ==================== PRODUCT THUMBNAILS MOBILE ==================== */
+        @media (max-width: 600px) {
+            .product-thumbs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding-bottom: 4px;
+            }
+            .product-thumbs::-webkit-scrollbar { display: none; }
+            .product-thumb {
+                flex-shrink: 0;
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* ==================== GRACIAS (POST-COMPRA) ==================== */
+        #gracias {
+            display: none;
+            min-height: 100vh;
+            padding-top: 100px;
+            padding-bottom: 4rem;
+            background: transparent;
+        }
+
+        .gracias-window {
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        .gracias-body {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .gracias-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            animation: floatBounce 3s ease-in-out infinite;
+        }
+
+        .gracias-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 800;
+            color: #3A5878;
+            margin-bottom: 0.75rem;
+        }
+
+        .gracias-message {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-mid);
+            line-height: 1.8;
+            max-width: 480px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .gracias-download-box {
+            background: rgba(168,207,240,0.12);
+            border: 2px dashed #A8CFF0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gracias-download-box p {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-mid);
+            margin-bottom: 1rem;
+        }
+
+        .gracias-canva-btn {
+            display: inline-block;
+            padding: 0.85rem 2rem;
+            background: linear-gradient(180deg, #7A5AC8 0%, #5A3AA0 50%, #4A2A90 100%);
+            color: #FFFFFF;
+            border: 2px solid #2A1A58;
+            border-radius: 8px;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 3px 3px 0px #1A1038, inset 0 1px 0px rgba(255,255,255,0.25);
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+
+        .gracias-canva-btn:hover {
+            background: linear-gradient(180deg, #8A6AD8 0%, #6A4AB0 50%, #5A3AA0 100%);
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #1A1038, inset 0 1px 0px rgba(255,255,255,0.3);
+            color: #FFFFFF;
+        }
+
+        .gracias-canva-btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px #1A1038;
+        }
+
+        .gracias-instructions {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 400;
+            color: var(--text-light);
+            line-height: 1.7;
+            max-width: 460px;
+            margin: 1.25rem auto 1.5rem;
+            padding: 0.8rem 1rem;
+            background: rgba(200,232,216,0.15);
+            border: 1.5px solid rgba(200,232,216,0.4);
+            border-radius: 12px;
+        }
+
+        .gracias-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            color: var(--sky-deep);
+            text-decoration: none;
+            padding: 0.4rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            background: rgba(255,255,255,0.7);
+            transition: all 0.2s ease;
+        }
+
+        .gracias-back:hover {
+            background: rgba(168,207,240,0.2);
+            border-color: var(--sky-mid);
+            color: var(--sky-deep);
+        }
     </style>
 </head>
 <body>
@@ -1833,6 +1974,47 @@
 
     <div class="washi-tape green"></div>
 
+    <!-- ==================== GRACIAS (POST-COMPRA) ==================== -->
+    <section id="gracias">
+        <div class="container">
+            <div class="gracias-window retro-section fade-in visible">
+                <div class="retro-section-titlebar purple-tb">
+                    <div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> gracias_compra.love</div>
+                    <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
+                </div>
+                <div class="retro-section-body gracias-body">
+                    <div class="gracias-emoji">&#x1F49B;</div>
+                    <h2 class="gracias-title">&iexcl;Gracias por tu compra! &hearts;</h2>
+                    <p class="gracias-message">
+                        De verdad, significa much&iacute;simo que hayas decidido llevarte un trocito de lo que hago con tanto cari&ntilde;o.
+                        Espero que lo disfrutes tanto como yo disfrut&eacute; cre&aacute;ndolo. &iexcl;Eres incre&iacute;ble! &#x2728;
+                    </p>
+
+                    <div class="gracias-download-box">
+                        <p>Aqu&iacute; tienes tu plantilla del <strong>Carnet de Rat&oacute;n de Biblioteca</strong>:</p>
+                        <a href="https://canva.link/fpz1bfhftx466ul" target="_blank" rel="noopener" class="gracias-canva-btn">
+                            Abrir plantilla en Canva &#x2726;
+                        </a>
+                    </div>
+
+                    <p class="gracias-instructions">
+                        Al hacer clic, Canva te crear&aacute; una copia editable en tu cuenta. Ed&iacute;tala, gu&aacute;rdala en tu m&oacute;vil o impr&iacute;mela.
+                        Si compraste la libreta f&iacute;sica, recibir&aacute;s un email con el seguimiento del env&iacute;o en las pr&oacute;ximas 24-48h.
+                    </p>
+
+                    <a href="#inicio" class="gracias-back" onclick="window.location.hash=''; location.reload(); return false;">
+                        &#x2190; Volver al inicio
+                    </a>
+                </div>
+                <div class="retro-section-statusbar">
+                    <span>&#x2714; Compra completada</span>
+                    <div class="retro-sb-track"><div class="retro-sb-fill" style="width:100%"></div></div>
+                    <span>&#x2764;&#xFE0F;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ==================== FOOTER ==================== -->
     <footer>
         <p>&#x2764;&#xFE0F; 2026 Níobe — <a href="#">@niromun_</a> — hecho con cariño y muchas tazas de te &#x2615;</p>
@@ -2066,6 +2248,16 @@
             thumb.classList.add('active');
         }
 
+        // ===== STRIPE PAYMENT LINKS BY SLUG =====
+        var STRIPE_LINKS = {
+            'libreta-parejas': 'https://buy.stripe.com/5kQ3cucKreF9e2C7NsfrW00',
+            'carnet-raton-biblioteca': 'https://buy.stripe.com/00wfZgfWD1Sn4s2d7MfrW01'
+        };
+
+        function getStripeLink(slug) {
+            return STRIPE_LINKS[slug] || '#';
+        }
+
         // ===== LOAD PRODUCTS FROM SUPABASE =====
         async function loadProducts() {
             var container = document.getElementById('productsContainer');
@@ -2085,25 +2277,29 @@
                     var images = product.images || [];
                     var mainImage = images.length > 0 ? images[0] : '';
                     var pid = 'product-' + index;
+                    var slug = product.slug || '';
 
                     // Build description with line breaks
                     var desc = (product.description || '').replace(/\n/g, '<br>');
+
+                    // Resolve Stripe link from slug
+                    var stripeUrl = getStripeLink(slug);
 
                     // Build button
                     var buttonHtml = '';
                     if (product.type === 'fisico' && (product.stock === 0 || product.stock === null)) {
                         buttonHtml = '<span class="btn product-buy-btn" style="opacity:0.5;cursor:not-allowed;pointer-events:none;">Agotado</span>';
                     } else if (product.type === 'digital') {
-                        buttonHtml = '<a href="' + (product.buy_url || '#') + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">♡ Descargar ♡</a>';
+                        buttonHtml = '<a href="' + stripeUrl + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Descargar ♡</a>';
                     } else {
-                        buttonHtml = '<a href="' + (product.buy_url || '#') + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">♡ Quiero esta ♡</a>';
+                        buttonHtml = '<a href="' + stripeUrl + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Quiero esta ♡</a>';
                     }
 
                     // Build thumbnails
                     var thumbsHtml = '';
                     images.forEach(function(img, i) {
                         var activeClass = i === 0 ? ' active' : '';
-                        thumbsHtml += '<img src="' + img + '" alt="' + (product.name || 'Producto') + ' - imagen ' + (i+1) + '" class="product-thumb' + activeClass + '" onclick="changeMainImg(this, \'' + pid + '\')">';
+                        thumbsHtml += '<img src="' + img + '" alt="' + (product.name || 'Producto') + ' - imagen ' + (i+1) + '" class="product-thumb' + activeClass + '" onclick="changeMainImg(this, \'' + pid + '\')">'; 
                     });
 
                     // Build price
@@ -2157,6 +2353,39 @@
 
         // Load products on page ready
         loadProducts();
+
+        // ===== #GRACIAS HASH ROUTING =====
+        function handleGraciasHash() {
+            var isGracias = window.location.hash === '#gracias';
+            var graciasSection = document.getElementById('gracias');
+            // Main content sections and decorative dividers
+            var mainSections = document.querySelectorAll('#inicio, #contenido, #vota, #historias, #contacto');
+            var dividers = document.querySelectorAll('.hearts-border, .washi-tape');
+            var headerEl = document.getElementById('header');
+
+            if (isGracias) {
+                // Hide all main sections
+                mainSections.forEach(function(s) { s.style.display = 'none'; });
+                dividers.forEach(function(d) { d.style.display = 'none'; });
+                // Show gracias
+                graciasSection.style.display = 'block';
+                // Hide nav links (not needed on thank-you page)
+                if (headerEl) headerEl.style.display = 'none';
+                // Scroll to top
+                window.scrollTo(0, 0);
+            } else {
+                // Show all main sections
+                mainSections.forEach(function(s) { s.style.display = ''; });
+                dividers.forEach(function(d) { d.style.display = ''; });
+                // Hide gracias
+                graciasSection.style.display = 'none';
+                if (headerEl) headerEl.style.display = '';
+            }
+        }
+
+        // Run on load and on hash change
+        handleGraciasHash();
+        window.addEventListener('hashchange', handleGraciasHash);
 
         function handleContact(e) {
             e.preventDefault();
