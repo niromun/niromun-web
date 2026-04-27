@@ -2233,8 +2233,8 @@
                 <div class="retro-section-body gracias-body">
                     <div class="gracias-emoji" style="color:#A8D8EA;">&#x1F499;</div>
                     <h2 class="gracias-title">&iexcl;Gracias por tu compra! &hearts;</h2>
-                    <p class="gracias-message">
-                        Significa much&iacute;simo que te haya gustado tanto !! Espero que lo disfrutes much&iacute;simo querido lector/a &#x2728;
+                    <p class="gracias-message" id="graciasMensaje">
+                        Significa much&iacute;simo que te haya gustado tanto !! Espero que lo disfrutes much&iacute;simo &#x2728;
                     </p>
 
                     <div id="graciasDigitalBlock" style="display:none;">
@@ -2948,6 +2948,18 @@
                     // Show only the blocks matching the purchased slugs
                     var hasDigital = ultimaCompra.indexOf('carnet-raton-biblioteca') !== -1;
                     var hasFisico = ultimaCompra.indexOf('libreta-parejas') !== -1;
+
+                    // Dynamic message based on purchase
+                    var msgEl = document.getElementById('graciasMensaje');
+                    if (msgEl) {
+                        if (hasDigital && !hasFisico) {
+                            msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo querido lector/a \u2728';
+                        } else if (hasFisico && !hasDigital) {
+                            msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que disfrut\u00e9is haci\u00e9ndola juntos \u2728';
+                        } else {
+                            msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo \u2728';
+                        }
+                    }
 
                     var digitalBlock = document.getElementById('graciasDigitalBlock');
                     var fisicoBlock = document.getElementById('graciasFisicoBlock');
