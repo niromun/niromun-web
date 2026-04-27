@@ -1359,6 +1359,78 @@
             box-shadow: 3px 3px 0px #1A1038, inset 0 1px 0px rgba(255,255,255,0.3);
         }
 
+        .btn-cart {
+            background: rgba(255,255,255,0.85);
+            color: var(--sky-deep);
+            border: 2px solid var(--border-dark);
+            box-shadow: 2px 2px 0px rgba(70,100,140,0.12);
+            text-shadow: none;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-cart:hover {
+            background: rgba(168,207,240,0.2);
+            border-color: var(--sky-deep);
+            color: var(--sky-deep);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px rgba(70,100,140,0.15);
+        }
+
+        .btn-cart:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px rgba(70,100,140,0.1);
+        }
+
+        /* ==================== NAV CART ICON ==================== */
+        .nav-cart {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all var(--transition);
+            border: 1.5px solid transparent;
+            color: var(--text-mid);
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        .nav-cart:hover {
+            background: rgba(168,207,240,0.2);
+            border-color: rgba(168,207,240,0.4);
+            color: var(--sky-deep);
+        }
+
+        .nav-cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -4px;
+            background: linear-gradient(135deg, #5A90C8, #3A6AA0);
+            color: #FFF;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 800;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid #FFF;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
         /* ==================== CONTACTO ==================== */
         #contacto { background: transparent; }
 
@@ -1671,6 +1743,7 @@
                     <li><a href="#vota">Vota</a></li>
                     <li><a href="#historias">Rincón</a></li>
                     <li><a href="#contacto">Contacto</a></li>
+                    <li><a href="#contenido" class="nav-cart" id="navCartBtn" title="Cesta">&#x1F6D2;<span class="nav-cart-badge" id="cartBadge">0</span></a></li>
                 </ul>
             </nav>
         </div>
@@ -1983,11 +2056,10 @@
                     <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
                 </div>
                 <div class="retro-section-body gracias-body">
-                    <div class="gracias-emoji">&#x1F49B;</div>
+                    <div class="gracias-emoji" style="color:#A8D8EA;">&#x1F499;</div>
                     <h2 class="gracias-title">&iexcl;Gracias por tu compra! &hearts;</h2>
                     <p class="gracias-message">
-                        De verdad, significa much&iacute;simo que hayas decidido llevarte un trocito de lo que hago con tanto cari&ntilde;o.
-                        Espero que lo disfrutes tanto como yo disfrut&eacute; cre&aacute;ndolo. &iexcl;Eres incre&iacute;ble! &#x2728;
+                        Significa much&iacute;simo que te haya gustado tanto !! Espero que lo disfrutes much&iacute;simo querido lector/a &#x2728;
                     </p>
 
                     <div class="gracias-download-box">
@@ -2236,17 +2308,22 @@
         updateTimer();
         setInterval(updateTimer, 60000);
 
-        // ===== CONTACT FORM =====
-        // ===== PRODUCT GALLERY (dynamic) =====
-        function changeMainImg(thumb, productId) {
-            var mainImg = document.querySelector('#product-' + productId + ' .product-main-img img');
+        // ===== PRODUCT GALLERY — event delegation for thumbnails =====
+        document.addEventListener('click', function(e) {
+            var thumb = e.target.closest('.product-thumb');
+            if (!thumb) return;
+            // Find the parent product card
+            var gallery = thumb.closest('.product-gallery');
+            if (!gallery) return;
+            var mainImg = gallery.querySelector('.product-main-img img');
             if (mainImg) {
                 mainImg.src = thumb.src;
                 mainImg.alt = thumb.alt;
             }
-            thumb.closest('.product-thumbs').querySelectorAll('.product-thumb').forEach(function(t) { t.classList.remove('active'); });
+            // Update active state
+            gallery.querySelectorAll('.product-thumb').forEach(function(t) { t.classList.remove('active'); });
             thumb.classList.add('active');
-        }
+        });
 
         // ===== STRIPE PAYMENT LINKS BY SLUG =====
         var STRIPE_LINKS = {
@@ -2285,21 +2362,23 @@
                     // Resolve Stripe link from slug
                     var stripeUrl = getStripeLink(slug);
 
-                    // Build button
+                    // Build buy button
                     var buttonHtml = '';
+                    var cartBtnHtml = '<button class="btn-cart" disabled title="Próximamente">Áñadir a la cesta &#x1F6D2;</button>';
                     if (product.type === 'fisico' && (product.stock === 0 || product.stock === null)) {
                         buttonHtml = '<span class="btn product-buy-btn" style="opacity:0.5;cursor:not-allowed;pointer-events:none;">Agotado</span>';
+                        cartBtnHtml = '';
                     } else if (product.type === 'digital') {
                         buttonHtml = '<a href="' + stripeUrl + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Descargar ♡</a>';
                     } else {
                         buttonHtml = '<a href="' + stripeUrl + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Quiero esta ♡</a>';
                     }
 
-                    // Build thumbnails
+                    // Build thumbnails — no inline onclick, using event delegation
                     var thumbsHtml = '';
                     images.forEach(function(img, i) {
                         var activeClass = i === 0 ? ' active' : '';
-                        thumbsHtml += '<img src="' + img + '" alt="' + (product.name || 'Producto') + ' - imagen ' + (i+1) + '" class="product-thumb' + activeClass + '" onclick="changeMainImg(this, \'' + pid + '\')">'; 
+                        thumbsHtml += '<img src="' + img + '" alt="' + (product.name || 'Producto') + ' - imagen ' + (i+1) + '" class="product-thumb' + activeClass + '">';
                     });
 
                     // Build price
@@ -2330,7 +2409,7 @@
                     html += '<h3 class="product-detail-title">' + (product.name || '') + '</h3>';
                     if (priceHtml) html += '<span class="product-price">' + priceHtml + '</span>';
                     html += '<div class="product-description"><p>' + desc + '</p></div>';
-                    html += '<div class="product-buy-buttons">' + buttonHtml + '</div>';
+                    html += '<div class="product-buy-buttons">' + buttonHtml + cartBtnHtml + '</div>';
                     html += '</div>';
 
                     html += '</div>'; // product-showcase
