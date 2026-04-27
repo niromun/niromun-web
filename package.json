@@ -1,0 +1,25 @@
+{
+  "name": "web-nio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "supabase.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niromun/niromun-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/niromun/niromun-web/issues"
+  },
+  "homepage": "https://github.com/niromun/niromun-web#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.104.1",
+    "stripe": "^22.1.0"
+  }
+}

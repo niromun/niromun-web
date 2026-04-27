@@ -1602,6 +1602,10 @@
             display: none !important;
         }
 
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* ==================== CONTACTO ==================== */
         #contacto { background: transparent; }
 
@@ -2233,17 +2237,24 @@
                         Significa much&iacute;simo que te haya gustado tanto !! Espero que lo disfrutes much&iacute;simo querido lector/a &#x2728;
                     </p>
 
-                    <div class="gracias-download-box">
-                        <p>Aqu&iacute; tienes tu plantilla del <strong>Carnet de Rat&oacute;n de Biblioteca</strong>:</p>
-                        <a href="https://canva.link/fpz1bfhftx466ul" target="_blank" rel="noopener" class="gracias-canva-btn">
-                            Abrir plantilla en Canva &#x2726;
-                        </a>
+                    <div id="graciasDigitalBlock" style="display:none;">
+                        <div class="gracias-download-box">
+                            <p>Aqu&iacute; tienes tu plantilla del <strong>Carnet de Rat&oacute;n de Biblioteca</strong>:</p>
+                            <a href="https://canva.link/fpz1bfhftx466ul" target="_blank" rel="noopener" class="gracias-canva-btn">
+                                Abrir plantilla en Canva &#x2726;
+                            </a>
+                        </div>
+                        <p class="gracias-instructions">
+                            Al hacer clic, Canva te crear&aacute; una copia editable en tu cuenta. Ed&iacute;tala, gu&aacute;rdala en tu m&oacute;vil o impr&iacute;mela.
+                        </p>
                     </div>
 
-                    <p class="gracias-instructions">
-                        Al hacer clic, Canva te crear&aacute; una copia editable en tu cuenta. Ed&iacute;tala, gu&aacute;rdala en tu m&oacute;vil o impr&iacute;mela.
-                        Si compraste la libreta f&iacute;sica, recibir&aacute;s un email con el seguimiento del env&iacute;o en las pr&oacute;ximas 24-48h.
-                    </p>
+                    <div id="graciasFisicoBlock" style="display:none;">
+                        <div class="gracias-download-box">
+                            <p>Tu libreta llegar&aacute; en <strong>3-5 d&iacute;as laborables</strong> &hearts;</p>
+                            <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--text-mid);">Recibir&aacute;s un email con el seguimiento del env&iacute;o en cuanto la mande.</p>
+                        </div>
+                    </div>
 
                     <a href="#inicio" class="gracias-back" onclick="window.location.hash=''; location.reload(); return false;">
                         &#x2190; Volver al inicio
@@ -2807,8 +2818,41 @@
         document.getElementById('cartOverlay').addEventListener('click', function(e) {
             if (e.target === this) closeCart();
         });
-        document.getElementById('cartCheckoutBtn').addEventListener('click', function() {
-            alert('Pr\u00f3ximamente: pago en un solo paso \u2726');
+        document.getElementById('cartCheckoutBtn').addEventListener('click', async function() {
+            var btn = this;
+            if (btn.disabled) return;
+            if (_cart.length === 0) return;
+
+            // Save slugs before checkout (for #gracias page)
+            var slugsList = _cart.map(function(i) { return i.slug; });
+            try { localStorage.setItem('niobe_ultima_compra', JSON.stringify(slugsList)); } catch(e) {}
+
+            // Disable button and show loading
+            btn.disabled = true;
+            var originalText = btn.innerHTML;
+            btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:0.5rem;">Procesando\u2026 <span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#FFF;border-radius:50%;animation:spin 0.6s linear infinite;"></span></span>';
+
+            try {
+                var payload = _cart.map(function(item) {
+                    return { slug: item.slug, quantity: item.qty };
+                });
+                var resp = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: payload })
+                });
+                var data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || 'Error del servidor');
+                if (data.url) {
+                    window.location.href = data.url;
+                    return;
+                }
+                throw new Error('No se recibi\u00f3 URL de pago');
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                showCartToast('Algo no fue bien al iniciar el pago, int\u00e9ntalo de nuevo en un momento \u2661');
+            }
         });
 
         // ===== EVENT DELEGATION: CART BUTTONS =====
@@ -2869,29 +2913,55 @@
         }, 200);
 
         // ===== #GRACIAS HASH ROUTING =====
+        var _graciasCleaned = false;
         function handleGraciasHash() {
             var isGracias = window.location.hash === '#gracias';
             var graciasSection = document.getElementById('gracias');
-            // Main content sections and decorative dividers
             var mainSections = document.querySelectorAll('#inicio, #contenido, #vota, #historias, #contacto');
             var dividers = document.querySelectorAll('.hearts-border, .washi-tape');
             var headerEl = document.getElementById('header');
 
             if (isGracias) {
-                // Hide all main sections
                 mainSections.forEach(function(s) { s.style.display = 'none'; });
                 dividers.forEach(function(d) { d.style.display = 'none'; });
-                // Show gracias
                 graciasSection.style.display = 'block';
-                // Hide nav links (not needed on thank-you page)
                 if (headerEl) headerEl.style.display = 'none';
-                // Scroll to top
                 window.scrollTo(0, 0);
+
+                // Clear cart and show dynamic blocks (only once per page load)
+                if (!_graciasCleaned) {
+                    _graciasCleaned = true;
+
+                    // Read what was purchased before clearing
+                    var ultimaCompra = [];
+                    try {
+                        var raw = localStorage.getItem('niobe_ultima_compra');
+                        if (raw) ultimaCompra = JSON.parse(raw);
+                    } catch(e) {}
+
+                    // Clear the cart
+                    _cart = [];
+                    saveCart();
+                    updateBadge();
+
+                    // Determine what was bought
+                    var hasDigital = ultimaCompra.indexOf('carnet-raton-biblioteca') !== -1;
+                    var hasFisico = ultimaCompra.indexOf('libreta-parejas') !== -1;
+
+                    // If no ultima compra data, show both as fallback
+                    if (ultimaCompra.length === 0) {
+                        hasDigital = true;
+                        hasFisico = true;
+                    }
+
+                    var digitalBlock = document.getElementById('graciasDigitalBlock');
+                    var fisicoBlock = document.getElementById('graciasFisicoBlock');
+                    if (digitalBlock) digitalBlock.style.display = hasDigital ? '' : 'none';
+                    if (fisicoBlock) fisicoBlock.style.display = hasFisico ? '' : 'none';
+                }
             } else {
-                // Show all main sections
                 mainSections.forEach(function(s) { s.style.display = ''; });
                 dividers.forEach(function(d) { d.style.display = ''; });
-                // Hide gracias
                 graciasSection.style.display = 'none';
                 if (headerEl) headerEl.style.display = '';
             }
