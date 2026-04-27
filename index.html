@@ -924,7 +924,7 @@
         .quote-slide {
             min-width: 100%;
             box-sizing: border-box;
-            padding: 2.5rem 2rem 2rem;
+            padding: 2.5rem 3.2rem 2rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -933,11 +933,11 @@
         }
 
         .quote-slide-text {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.05rem, 3vw, 1.35rem);
-            font-style: italic;
-            font-weight: 400;
-            color: #3A5878;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: clamp(1.15rem, 3vw, 1.5rem);
+            font-style: normal;
+            font-weight: 700;
+            color: #2A4060;
             line-height: 1.7;
             margin-bottom: 1.2rem;
             max-width: 540px;
@@ -966,30 +966,28 @@
             display: flex;
             justify-content: space-between;
             pointer-events: none;
-            padding: 0 0.3rem;
-        }
-        @media (min-width: 700px) {
-            .quote-carousel-arrows { padding: 0; left: -48px; right: -48px; }
+            padding: 0 0.6rem;
         }
 
         .quote-arrow {
             pointer-events: auto;
-            width: 36px; height: 36px;
+            width: 38px; height: 38px;
             border-radius: 50%;
-            border: 2px solid var(--border-dark);
-            background: rgba(255,255,255,0.9);
-            color: var(--sky-deep);
-            font-size: 16px; font-weight: 800;
+            border: 2px solid #C8A882;
+            background: #FFF5E8;
+            color: #7A5A3A;
+            font-size: 17px; font-weight: 800;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.18s ease;
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            box-shadow: 2px 2px 0px rgba(70,100,140,0.1);
+            box-shadow: 2px 2px 0px rgba(120,80,40,0.12);
         }
         .quote-arrow:hover {
-            background: rgba(168,207,240,0.25);
-            border-color: var(--sky-deep);
-            transform: scale(1.08);
+            background: #F0DCC4;
+            border-color: #A07850;
+            transform: scale(1.1);
+            box-shadow: 3px 3px 0px rgba(120,80,40,0.18);
         }
         .quote-arrow:active { transform: scale(0.95); }
 
