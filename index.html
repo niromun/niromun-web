@@ -1240,6 +1240,41 @@
             pointer-events: none;
         }
 
+        /* Poll en pausa — pantalla "Próximamente" */
+        .poll-soon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2.8rem 1.2rem;
+            gap: 0.9rem;
+        }
+
+        .poll-soon-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #3A5878;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            letter-spacing: 0.5px;
+        }
+
+        .poll-soon-title .sparkle {
+            font-size: 1.25rem;
+            filter: drop-shadow(0 0 4px rgba(255, 220, 120, 0.55));
+        }
+
+        .poll-soon-text {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.1rem;
+            color: var(--text-mid);
+            max-width: 380px;
+            line-height: 1.55;
+        }
+
         /* ==================== PRODUCTOS ==================== */
         .product-showcase {
             display: grid;
@@ -2046,53 +2081,19 @@
                     <div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div>
                 </div>
                 <div class="retro-section-body">
-                    <div class="poll-header">
-                        <h3>¿Sobre qué te gustaría que grabara la próxima semana?</h3>
-                        <div class="poll-timer" id="pollTimer">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
-                            <span id="timerText">Cargando...</span>
-                        </div>
+                    <div class="poll-soon">
+                        <h3 class="poll-soon-title">
+                            <span class="sparkle">&#x2728;</span>
+                            Próximamente
+                            <span class="sparkle">&#x2728;</span>
+                        </h3>
+                        <p class="poll-soon-text">Estoy pensando nuevas ideas de votaciones</p>
                     </div>
-
-                    <div class="poll-option" data-option="0" onclick="vote(0)">
-                        <div class="poll-option-header">
-                            <span class="poll-option-label">
-                                <span class="poll-radio"></span>
-                                Collage desde cero
-                            </span>
-                            <span class="poll-percentage">0%</span>
-                        </div>
-                        <div class="poll-bar-track"><div class="poll-bar-fill"></div></div>
-                    </div>
-
-                    <div class="poll-option" data-option="1" onclick="vote(1)">
-                        <div class="poll-option-header">
-                            <span class="poll-option-label">
-                                <span class="poll-radio"></span>
-                                Recomendación de libro
-                            </span>
-                            <span class="poll-percentage">0%</span>
-                        </div>
-                        <div class="poll-bar-track"><div class="poll-bar-fill"></div></div>
-                    </div>
-
-                    <div class="poll-option" data-option="2" onclick="vote(2)">
-                        <div class="poll-option-header">
-                            <span class="poll-option-label">
-                                <span class="poll-radio"></span>
-                                Nueva palabra
-                            </span>
-                            <span class="poll-percentage">0%</span>
-                        </div>
-                        <div class="poll-bar-track"><div class="poll-bar-fill"></div></div>
-                    </div>
-
-                    <p class="poll-total">&#x2764;&#xFE0F; <span id="totalVotes">0</span> votos</p>
                 </div>
                 <div class="retro-section-statusbar">
-                    <span>Status: activa</span>
-                    <div class="retro-sb-track"><div class="retro-sb-fill"></div></div>
-                    <span>Loading...</span>
+                    <span>Status: en pausa</span>
+                    <div class="retro-sb-track"><div class="retro-sb-fill" style="width:100%"></div></div>
+                    <span>&#x1F4AB;</span>
                 </div>
             </div>
         </div>
@@ -2120,31 +2121,26 @@
                                 <div class="quote-slide">
                                     <p class="quote-slide-text">&ldquo;Cuando la huerta est&aacute; bien plantada, al irnos a la cama sabemos que solo es cuesti&oacute;n de tiempo que salgan las flores&rdquo;</p>
                                     <span class="quote-slide-source">Vivir liberado &middot; Michael A. Singer</span>
-                                    <span class="quote-slide-meta">29 de marzo, 2026 &middot; semana 1/&#x221E;</span>
                                 </div>
 
                                 <div class="quote-slide">
                                     <p class="quote-slide-text">&ldquo;Recuerda, el pasado no tiene porqu&eacute; ser tambi&eacute;n nuestro futuro&rdquo;</p>
                                     <span class="quote-slide-source">Elantris &middot; Brandon Sanderson</span>
-                                    <span class="quote-slide-meta">5 de abril, 2026 &middot; semana 2/&#x221E;</span>
                                 </div>
 
                                 <div class="quote-slide">
                                     <p class="quote-slide-text">&ldquo;El culpable del caos de nuestras vidas, si es que hay alguno, tan solo somos nosotros&rdquo;</p>
                                     <span class="quote-slide-source">El libro de los Baltimore &middot; Jo&euml;l Dicker</span>
-                                    <span class="quote-slide-meta">12 de abril, 2026 &middot; semana 3/&#x221E;</span>
                                 </div>
 
                                 <div class="quote-slide">
                                     <p class="quote-slide-text">&ldquo;Vive el presente con un ojo en el futuro&rdquo;</p>
                                     <span class="quote-slide-source">Noriko Morishita</span>
-                                    <span class="quote-slide-meta">19 de abril, 2026 &middot; semana 4/&#x221E;</span>
                                 </div>
 
                                 <div class="quote-slide">
                                     <p class="quote-slide-text">&ldquo;Ten&iacute;a muchos motivos para quedarse donde estaba. Pero uno para moverse&rdquo;</p>
                                     <span class="quote-slide-source">El ritmo de la guerra &middot; Brandon Sanderson</span>
-                                    <span class="quote-slide-meta">26 de abril, 2026 &middot; semana 5/&#x221E;</span>
                                 </div>
 
                             </div>
@@ -2157,9 +2153,9 @@
                     </div>
                 </div>
                 <div class="retro-section-statusbar">
-                    <span id="quoteStatusText">semana 5/&#x221E;</span>
-                    <div class="retro-sb-track"><div class="retro-sb-fill" id="quoteProgress" style="width:100%"></div></div>
-                    <span>&#x2728;</span>
+                    <span>diario_frases.txt</span>
+                    <div class="retro-sb-track"><div class="retro-sb-fill" style="width:100%"></div></div>
+                    <span>&#x2764;&#xFE0F;</span>
                 </div>
             </div>
         </div>
@@ -2371,135 +2367,8 @@
         });
 
         // ===== POLL SYSTEM (Firebase Realtime) =====
-        var POLL_ID = 'niobe_poll_003';
-        var POLL_CREATED = '2026-03-29';
-        var POLL_DURATION_DAYS = 30;
-        var NUM_OPTIONS = 3;
-        var pollRef = db.ref('polls/' + POLL_ID + '/votes');
-        var pollVoting = false;
-
-        function getChosenOption() {
-            var v = localStorage.getItem(POLL_ID + '_choice');
-            return v !== null ? parseInt(v) : -1;
-        }
-
-        function setChoice(idx) {
-            localStorage.setItem(POLL_ID + '_choice', idx.toString());
-        }
-
-        function updatePollUI(votes) {
-            var total = 0;
-            for (var i = 0; i < NUM_OPTIONS; i++) total += (votes[i] || 0);
-
-            var options = document.querySelectorAll('.poll-option[data-option]');
-            var chosen = getChosenOption();
-
-            options.forEach(function(opt) {
-                var idx = parseInt(opt.getAttribute('data-option'));
-                var count = votes[idx] || 0;
-                var pct = total > 0 ? Math.round((count / total) * 100) : 0;
-                var bar = opt.querySelector('.poll-bar-fill');
-                var label = opt.querySelector('.poll-percentage');
-
-                bar.style.width = pct + '%';
-                label.textContent = pct + '%';
-
-                opt.classList.remove('selected');
-                if (chosen >= 0) {
-                    opt.classList.add('voted');
-                    label.style.opacity = '1';
-                    if (idx === chosen) opt.classList.add('selected');
-                } else {
-                    opt.classList.remove('voted');
-                    label.style.opacity = '0';
-                }
-            });
-
-            document.getElementById('totalVotes').textContent = total;
-        }
-
-        function vote(optionIndex) {
-            var prev = getChosenOption();
-            if (prev === optionIndex || pollVoting) return;
-            pollVoting = true;
-
-            // Set choice immediately so UI updates correctly when Firebase fires
-            setChoice(optionIndex);
-
-            // Use transaction for atomic read-modify-write
-            pollRef.transaction(function(currentVotes) {
-                if (currentVotes === null) {
-                    currentVotes = {};
-                    for (var j = 0; j < NUM_OPTIONS; j++) currentVotes[j] = 0;
-                }
-                // Subtract previous vote
-                if (prev >= 0 && (currentVotes[prev] || 0) > 0) {
-                    currentVotes[prev] = (currentVotes[prev] || 0) - 1;
-                }
-                // Add new vote
-                currentVotes[optionIndex] = (currentVotes[optionIndex] || 0) + 1;
-                return currentVotes;
-            }, function(error, committed) {
-                pollVoting = false;
-                if (error) {
-                    console.error('Vote error:', error);
-                    // Revert choice on error
-                    if (prev >= 0) setChoice(prev);
-                    else localStorage.removeItem(POLL_ID + '_choice');
-                }
-            });
-        }
-
-        // Listen for real-time updates from Firebase
-        pollRef.on('value', function(snapshot) {
-            var data = snapshot.val();
-            var votes = [];
-            for (var i = 0; i < NUM_OPTIONS; i++) {
-                votes[i] = (data && data[i]) ? data[i] : 0;
-            }
-            updatePollUI(votes);
-        });
-
-        // Initialize votes in Firebase if they don't exist
-        pollRef.once('value', function(snapshot) {
-            if (!snapshot.exists()) {
-                var init = {};
-                for (var i = 0; i < NUM_OPTIONS; i++) init[i] = 0;
-                pollRef.set(init).then(function() {
-                    console.log('Poll initialized in Firebase');
-                }).catch(function(err) {
-                    console.error('Poll init error:', err);
-                });
-            }
-        });
-
-        // Timer
-        function updateTimer() {
-            var created = new Date(POLL_CREATED + 'T00:00:00');
-            var deadline = new Date(created.getTime() + POLL_DURATION_DAYS * 24 * 60 * 60 * 1000);
-            var now = new Date();
-            var diff = deadline - now;
-
-            if (diff <= 0) {
-                document.getElementById('timerText').textContent = 'Encuesta cerrada';
-                document.querySelectorAll('.poll-option').forEach(function(opt) {
-                    opt.setAttribute('onclick', '');
-                });
-                return;
-            }
-
-            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-            if (days > 0) {
-                document.getElementById('timerText').textContent = days + (days === 1 ? ' dia' : ' dias') + ' restante' + (days === 1 ? '' : 's');
-            } else {
-                document.getElementById('timerText').textContent = hours + 'h restantes';
-            }
-        }
-
-        updateTimer();
-        setInterval(updateTimer, 60000);
+        // Encuesta en pausa: la sección Vota muestra "Próximamente" hasta tener nuevas votaciones.
+        // El bloque de poll/timer se reactivará cuando vuelva la encuesta.
 
         // ===== PRODUCT GALLERY — event delegation for thumbnails =====
         document.addEventListener('click', function(e) {
@@ -2896,8 +2765,6 @@
             var dotsContainer = document.getElementById('quoteDots');
             var prevBtn = document.getElementById('quotePrev');
             var nextBtn = document.getElementById('quoteNext');
-            var statusText = document.getElementById('quoteStatusText');
-            var progressBar = document.getElementById('quoteProgress');
             var total = slides.length;
             var current = total - 1; // Start at the latest (most recent)
 
@@ -2919,10 +2786,6 @@
                 dots.forEach(function(d, di) {
                     d.classList.toggle('active', di === current);
                 });
-                // Update status bar
-                var weekNum = current + 1;
-                statusText.textContent = 'semana ' + weekNum + '/\u221E';
-                progressBar.style.width = ((weekNum / total) * 100) + '%';
             }
 
             prevBtn.addEventListener('click', function() { goTo(current - 1); });
