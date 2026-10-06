@@ -2220,36 +2220,45 @@
                 </div>
                 <div class="retro-section-body gracias-body">
                     <div class="gracias-emoji" style="color:#A8D8EA;">&#x1F499;</div>
-                    <h2 class="gracias-title">&iexcl;Gracias por tu compra! &hearts;</h2>
-                    <p class="gracias-message" id="graciasMensaje">
+                    <h2 class="gracias-title" id="graciasTitulo">Comprobando tu compra&hellip;</h2>
+                    <p class="gracias-message" id="graciasMensaje" style="display:none;">
                         Significa much&iacute;simo que te haya gustado tanto !! Espero que lo disfrutes much&iacute;simo &#x2728;
                     </p>
 
-                    <div id="graciasDigitalBlock" style="display:none;">
+                    <div id="graciasLoadingBlock" style="display:none;">
                         <div class="gracias-download-box">
-                            <p>Aqu&iacute; tienes tu plantilla del <strong>Carnet de Rat&oacute;n de Biblioteca</strong>:</p>
-                            <a href="https://canva.link/fpz1bfhftx466ul" target="_blank" rel="noopener" class="gracias-canva-btn">
-                                Abrir plantilla en Canva &#x2726;
-                            </a>
+                            <p>Comprobando tu pago&hellip; &#x2728;</p>
                         </div>
+                    </div>
+
+                    <div id="graciasLinksBlock" style="display:none;">
+                        <div class="gracias-download-box" id="graciasLinksContainer"></div>
                         <p class="gracias-instructions">
-                            Al hacer clic, Canva te crear&aacute; una copia editable en tu cuenta. Ed&iacute;tala, gu&aacute;rdala en tu m&oacute;vil o impr&iacute;mela.
+                            Pulsa el enlace y elige <strong>Usar plantilla</strong> para guardarla en tu Canva.<br>
+                            Hazlo ahora: el enlace no se env&iacute;a por email. Si lo pierdes, escr&iacute;beme a niromun.nio@gmail.com &hearts;
                         </p>
                     </div>
 
-                    <div id="graciasFisicoBlock" style="display:none;">
+                    <div id="graciasPhysicalBlock" style="display:none;">
                         <div class="gracias-download-box">
                             <p>Tu libreta llegar&aacute; en <strong>3-5 d&iacute;as laborables</strong> &hearts;</p>
                             <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--text-mid);">Recibir&aacute;s un email con el seguimiento del env&iacute;o en cuanto la mande.</p>
                         </div>
                     </div>
 
-                    <a href="#inicio" class="gracias-back" onclick="window.location.hash=''; location.reload(); return false;">
+                    <div id="graciasErrorBlock" style="display:none;">
+                        <div class="gracias-download-box">
+                            <p>No hemos podido comprobar tu compra. Si ya has pagado, recarga la p&aacute;gina en unos segundos.</p>
+                            <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--text-mid);">Si sigue sin funcionar, escr&iacute;beme a niromun.nio@gmail.com y lo solucionamos &hearts;</p>
+                        </div>
+                    </div>
+
+                    <a href="/" class="gracias-back">
                         &#x2190; Volver al inicio
                     </a>
                 </div>
                 <div class="retro-section-statusbar">
-                    <span>&#x2714; Compra completada</span>
+                    <span id="graciasEstado">&#x23F3; Verificando</span>
                     <div class="retro-sb-track"><div class="retro-sb-fill" style="width:100%"></div></div>
                     <span>&#x2764;&#xFE0F;</span>
                 </div>
@@ -2388,16 +2397,6 @@
             thumb.classList.add('active');
         });
 
-        // ===== STRIPE PAYMENT LINKS BY SLUG =====
-        var STRIPE_LINKS = {
-            'libreta-parejas': 'https://buy.stripe.com/5kQ3cucKreF9e2C7NsfrW00',
-            'carnet-raton-biblioteca': 'https://buy.stripe.com/00wfZgfWD1Sn4s2d7MfrW01'
-        };
-
-        function getStripeLink(slug) {
-            return STRIPE_LINKS[slug] || '#';
-        }
-
         // ===== LOAD PRODUCTS FROM SUPABASE =====
         var _productsCache = []; // store for cart use
 
@@ -2406,7 +2405,8 @@
             try {
                 var { data: products, error } = await supabaseClient
                     .from('products')
-                    .select('*');
+                    .select('slug, name, description, price, stock, type, images')
+                    .eq('active', true);
 
                 if (error) throw error;
                 if (!products || products.length === 0) {
@@ -2422,7 +2422,6 @@
                     var pid = 'product-' + index;
                     var slug = product.slug || '';
                     var desc = (product.description || '').replace(/\n/g, '<br>');
-                    var stripeUrl = getStripeLink(slug);
 
                     // Buy button
                     var buttonHtml = '';
@@ -2431,9 +2430,9 @@
                         buttonHtml = '<span class="btn product-buy-btn" style="opacity:0.5;cursor:not-allowed;pointer-events:none;">Agotado</span>';
                         cartBtnHtml = '';
                     } else if (product.type === 'digital') {
-                        buttonHtml = '<a href="' + stripeUrl + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Descargar \u2661</a>';
+                        buttonHtml = '<a href="#" role="button" class="btn product-buy-btn btn-stripe btn-buy-now" data-slug="' + slug + '">Comprar \u2661</a>';
                     } else {
-                        buttonHtml = '<a href="' + stripeUrl + '" target="_blank" rel="noopener" class="btn product-buy-btn btn-stripe">Quiero esta \u2661</a>';
+                        buttonHtml = '<a href="#" role="button" class="btn product-buy-btn btn-stripe btn-buy-now" data-slug="' + slug + '">Quiero esta \u2661</a>';
                     }
 
                     // Thumbnails
@@ -2679,45 +2678,62 @@
         document.getElementById('cartOverlay').addEventListener('click', function(e) {
             if (e.target === this) closeCart();
         });
-        document.getElementById('cartCheckoutBtn').addEventListener('click', async function() {
-            var btn = this;
-            if (btn.disabled) return;
-            if (_cart.length === 0) return;
-
-            // Save slugs before checkout (for #gracias page)
-            var slugsList = _cart.map(function(i) { return i.slug; });
-            try { localStorage.setItem('ultimaCompra', JSON.stringify(slugsList)); } catch(e) {}
-
-            // Disable button and show loading
-            btn.disabled = true;
+        // Inicia Stripe Checkout. Precio, stock y disponibilidad se validan en el servidor.
+        async function startCheckout(items, btn) {
+            if (btn.getAttribute('aria-busy') === 'true') return;
+            btn.setAttribute('aria-busy', 'true');
+            if (btn.tagName === 'BUTTON') btn.disabled = true;
             var originalText = btn.innerHTML;
             btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:0.5rem;">Procesando\u2026 <span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#FFF;border-radius:50%;animation:spin 0.6s linear infinite;"></span></span>';
 
             try {
-                var payload = _cart.map(function(item) {
-                    return { slug: item.slug, quantity: item.qty };
-                });
                 var resp = await fetch('/api/create-checkout-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ items: payload })
+                    body: JSON.stringify({ items: items })
                 });
                 var data = await resp.json();
-                if (!resp.ok) throw new Error(data.error || 'Error del servidor');
+                if (!resp.ok) {
+                    var e = new Error(data.error || 'Error del servidor');
+                    e.userMessage = resp.status < 500 ? data.error : null;
+                    throw e;
+                }
                 if (data.url) {
                     window.location.href = data.url;
                     return;
                 }
                 throw new Error('No se recibi\u00f3 URL de pago');
             } catch (err) {
-                btn.disabled = false;
+                console.error('Checkout error:', err);
+                btn.removeAttribute('aria-busy');
+                if (btn.tagName === 'BUTTON') btn.disabled = false;
                 btn.innerHTML = originalText;
-                showCartToast('Algo no fue bien al iniciar el pago, int\u00e9ntalo de nuevo en un momento \u2661');
+                showCartToast(err.userMessage || 'Algo no fue bien al iniciar el pago, int\u00e9ntalo de nuevo en un momento \u2661');
             }
+        }
+
+        // Al volver con "atrás" desde Stripe, los botones no deben quedarse en "Procesando…"
+        window.addEventListener('pageshow', function(e) {
+            if (e.persisted) window.location.reload();
+        });
+
+        document.getElementById('cartCheckoutBtn').addEventListener('click', function() {
+            if (_cart.length === 0) return;
+            startCheckout(_cart.map(function(item) {
+                return { slug: item.slug, quantity: item.qty };
+            }), this);
         });
 
         // ===== EVENT DELEGATION: CART BUTTONS =====
         document.addEventListener('click', function(e) {
+            // "Comprar" / "Quiero esta": compra directa de un producto
+            var buyBtn = e.target.closest('.btn-buy-now');
+            if (buyBtn) {
+                e.preventDefault();
+                startCheckout([{ slug: buyBtn.getAttribute('data-slug'), quantity: 1 }], buyBtn);
+                return;
+            }
+
             // "Añadir a la cesta" buttons on product cards
             var cartBtn = e.target.closest('.btn-cart');
             if (cartBtn && !cartBtn.disabled) {
@@ -2833,10 +2849,138 @@
             }
         }, 200);
 
-        // ===== #GRACIAS HASH ROUTING =====
-        var _graciasCleaned = false;
+        // ===== #GRACIAS: entrega verificada en servidor =====
+        // Stripe vuelve a /?session_id=cs_...#gracias. Los enlaces solo llegan desde
+        // /api/get-purchase-links tras comprobar en Stripe que la sesión está pagada.
+        var _graciasLoaded = false;
+
+        function getCheckoutSessionId() {
+            var id = new URLSearchParams(window.location.search).get('session_id');
+            if (!id) {
+                var hashQuery = window.location.hash.split('?')[1];
+                if (hashQuery) id = new URLSearchParams(hashQuery).get('session_id');
+            }
+            return id;
+        }
+
+        function setGraciasBlocks(show) {
+            var blocks = { loading: 'graciasLoadingBlock', links: 'graciasLinksBlock', physical: 'graciasPhysicalBlock', error: 'graciasErrorBlock' };
+            Object.keys(blocks).forEach(function(key) {
+                var el = document.getElementById(blocks[key]);
+                if (el) el.style.display = show[key] ? 'block' : 'none';
+            });
+        }
+
+        function setGraciasHeader(title, status) {
+            document.getElementById('graciasTitulo').innerHTML = title;
+            document.getElementById('graciasEstado').innerHTML = status;
+        }
+
+        // Quita de la cesta solo lo comprado, una vez por sesión de pago
+        function removePurchasedFromCart(sessionId, purchases) {
+            var KEY = 'niobe_cart_cleared_for';
+            try { if (localStorage.getItem(KEY) === sessionId) return; } catch (e) {}
+            var bought = purchases.map(function(p) { return p.slug; });
+            _cart = _cart.filter(function(item) { return bought.indexOf(item.slug) === -1; });
+            saveCart();
+            updateBadge();
+            try { localStorage.setItem(KEY, sessionId); } catch (e) {}
+        }
+
+        function renderDigitalLinks(digital) {
+            var container = document.getElementById('graciasLinksContainer');
+            container.textContent = '';
+            digital.forEach(function(p) {
+                var item = document.createElement('p');
+                item.style.marginBottom = '1.25rem';
+                var title = document.createElement('strong');
+                title.textContent = p.name;
+                item.appendChild(title);
+                item.appendChild(document.createElement('br'));
+                if (p.url && /^https:\/\//.test(p.url)) {
+                    var a = document.createElement('a');
+                    a.href = p.url;
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                    a.className = 'gracias-canva-btn';
+                    a.style.marginTop = '0.75rem';
+                    a.textContent = 'Abrir plantilla en Canva \u2726';
+                    item.appendChild(a);
+                } else {
+                    var missing = document.createElement('span');
+                    missing.textContent = 'Tu enlace no est\u00e1 disponible ahora mismo. Escr\u00edbeme a niromun.nio@gmail.com y te lo env\u00edo \u2661';
+                    item.appendChild(missing);
+                }
+                container.appendChild(item);
+            });
+        }
+
+        function loadPurchase() {
+            var sessionId = getCheckoutSessionId();
+            if (!sessionId) {
+                setGraciasHeader('No hemos podido verificar la compra', '&#x2716; Sin verificar');
+                setGraciasBlocks({ error: true });
+                return;
+            }
+            setGraciasBlocks({ loading: true });
+
+            fetch('/api/get-purchase-links', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sessionId: sessionId })
+            })
+            .then(function(res) {
+                return res.json().then(function(data) { return { ok: res.ok, data: data }; });
+            })
+            .then(function(r) {
+                if (r.data && r.data.pending) {
+                    var err = new Error('pending');
+                    err.pending = true;
+                    throw err;
+                }
+                if (!r.ok || !r.data || !r.data.success) {
+                    throw new Error((r.data && r.data.error) || 'Respuesta no v\u00e1lida');
+                }
+                var purchases = r.data.purchases || [];
+                var digital = purchases.filter(function(p) { return p.type === 'digital'; });
+                var physical = purchases.filter(function(p) { return p.type === 'fisico'; });
+
+                // Compra verificada
+                removePurchasedFromCart(sessionId, purchases);
+                setGraciasHeader('&iexcl;Gracias por tu compra! &hearts;', '&#x2714; Compra completada');
+
+                var msgEl = document.getElementById('graciasMensaje');
+                if (msgEl) {
+                    msgEl.style.display = '';
+                    if (digital.length && !physical.length) {
+                        msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo querido lector/a \u2728';
+                    } else if (physical.length && !digital.length) {
+                        msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que disfrut\u00e9is haci\u00e9ndola juntos \u2728';
+                    } else {
+                        msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo \u2728';
+                    }
+                }
+
+                renderDigitalLinks(digital);
+                setGraciasBlocks({ links: digital.length > 0, physical: physical.length > 0 });
+            })
+            .catch(function(err) {
+                console.error('Error verificando la compra:', err);
+                if (err && err.pending) {
+                    setGraciasHeader('Tu pago se est&aacute; procesando', '&#x23F3; Pendiente');
+                    var p = document.querySelector('#graciasErrorBlock p');
+                    if (p) p.textContent = 'Tu banco a\u00fan no ha confirmado el pago. Vuelve a abrir esta p\u00e1gina en un rato para ver tu enlace.';
+                } else {
+                    setGraciasHeader('No hemos podido verificar la compra', '&#x2716; Sin verificar');
+                }
+                setGraciasBlocks({ error: true });
+            });
+        }
+
         function handleGraciasHash() {
-            var isGracias = window.location.hash === '#gracias';
+            var hash = window.location.hash;
+            var isGracias = hash === '#gracias' || hash.indexOf('#gracias?') === 0 ||
+                (hash === '' && !!getCheckoutSessionId());
             var graciasSection = document.getElementById('gracias');
             var mainSections = document.querySelectorAll('#inicio, #contenido, #vota, #historias, #contacto');
             var dividers = document.querySelectorAll('.hearts-border, .washi-tape');
@@ -2849,43 +2993,9 @@
                 if (headerEl) headerEl.style.display = 'none';
                 window.scrollTo(0, 0);
 
-                // Clear cart and show dynamic blocks (only once per page load)
-                if (!_graciasCleaned) {
-                    _graciasCleaned = true;
-
-                    // Read what was purchased before clearing
-                    var ultimaCompra = [];
-                    try {
-                        var raw = localStorage.getItem('ultimaCompra');
-                        if (raw) ultimaCompra = JSON.parse(raw);
-                    } catch(e) {}
-
-                    // Clear the cart and the purchase record
-                    _cart = [];
-                    saveCart();
-                    updateBadge();
-                    try { localStorage.removeItem('ultimaCompra'); } catch(e) {}
-
-                    // Show only the blocks matching the purchased slugs
-                    var hasDigital = ultimaCompra.indexOf('carnet-raton-biblioteca') !== -1;
-                    var hasFisico = ultimaCompra.indexOf('libreta-parejas') !== -1;
-
-                    // Dynamic message based on purchase
-                    var msgEl = document.getElementById('graciasMensaje');
-                    if (msgEl) {
-                        if (hasDigital && !hasFisico) {
-                            msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo querido lector/a \u2728';
-                        } else if (hasFisico && !hasDigital) {
-                            msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que disfrut\u00e9is haci\u00e9ndola juntos \u2728';
-                        } else {
-                            msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo \u2728';
-                        }
-                    }
-
-                    var digitalBlock = document.getElementById('graciasDigitalBlock');
-                    var fisicoBlock = document.getElementById('graciasFisicoBlock');
-                    if (digitalBlock) digitalBlock.style.display = hasDigital ? '' : 'none';
-                    if (fisicoBlock) fisicoBlock.style.display = hasFisico ? '' : 'none';
+                if (!_graciasLoaded) {
+                    _graciasLoaded = true;
+                    loadPurchase();
                 }
             } else {
                 mainSections.forEach(function(s) { s.style.display = ''; });

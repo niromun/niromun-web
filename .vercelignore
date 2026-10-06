@@ -1,0 +1,6 @@
+# Archivos internos que no deben publicarse en la web
+.claude
+claude.md
+*.md
+_migrations_manual
+.env.example

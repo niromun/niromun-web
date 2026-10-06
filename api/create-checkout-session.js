@@ -8,6 +8,21 @@ const supabase = createClient(
     process.env.SUPABASE_PUBLISHABLE_KEY
 );
 
+// URL base a la que vuelve Stripe tras pagar o cancelar.
+// Se calcula con variables de sistema de Vercel (no con cabeceras del cliente),
+// para que una preview vuelva a su propia URL y producción a su dominio.
+function getBaseUrl() {
+    if (process.env.VERCEL_ENV === 'production') {
+        return 'https://' + (process.env.VERCEL_PROJECT_PRODUCTION_URL || 'niromun-web.vercel.app');
+    }
+    if (process.env.VERCEL_URL) {
+        var host = process.env.VERCEL_URL;
+        var isLocal = host.indexOf('localhost') === 0 || host.indexOf('127.0.0.1') === 0;
+        return (isLocal ? 'http://' : 'https://') + host;
+    }
+    return 'http://localhost:3000';
+}
+
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Método no permitido' });
@@ -24,11 +39,12 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Demasiados productos en la cesta' });
         }
 
-        // Extract slugs and fetch real prices from Supabase
+        // Extract slugs and fetch real prices from Supabase (only active products)
         var slugs = items.map(function (i) { return i.slug; });
         var { data: products, error: dbError } = await supabase
             .from('products')
             .select('slug, name, price, stock, type, images')
+            .eq('active', true)
             .in('slug', slugs);
 
         if (dbError) {
@@ -40,6 +56,7 @@ module.exports = async function handler(req, res) {
         var productMap = {};
         products.forEach(function (p) { productMap[p.slug] = p; });
 
+        var baseUrl = getBaseUrl();
         var lineItems = [];
         var hasPhysical = false;
         var purchasedSlugs = [];
@@ -50,10 +67,11 @@ module.exports = async function handler(req, res) {
             var quantity = parseInt(item.quantity, 10);
 
             if (!slug || !quantity || quantity < 1) continue;
+            if (purchasedSlugs.indexOf(slug) !== -1) continue; // no duplicar líneas
 
             var product = productMap[slug];
             if (!product) {
-                return res.status(400).json({ error: 'Producto no encontrado: ' + slug });
+                return res.status(400).json({ error: 'Producto no disponible: ' + slug });
             }
 
             // Validate stock for physical products
@@ -74,14 +92,19 @@ module.exports = async function handler(req, res) {
                 quantity = 1;
             }
 
+            // Stripe necesita URLs absolutas para las imágenes
             var image = (product.images && product.images.length > 0) ? product.images[0] : undefined;
+            if (image && !/^https?:\/\//.test(image)) {
+                image = baseUrl + '/' + image.replace(/^\//, '');
+            }
 
             lineItems.push({
                 price_data: {
                     currency: 'eur',
                     product_data: {
                         name: product.name,
-                        images: image ? [image] : []
+                        images: image ? [encodeURI(image)] : [],
+                        metadata: { slug: slug }
                     },
                     unit_amount: Math.round(product.price * 100)
                 },
@@ -113,10 +136,13 @@ module.exports = async function handler(req, res) {
         var sessionOptions = {
             mode: 'payment',
             line_items: lineItems,
-            success_url: 'https://niromun-web.vercel.app/#gracias',
-            cancel_url: 'https://niromun-web.vercel.app/#productos',
+            success_url: baseUrl + '/?session_id={CHECKOUT_SESSION_ID}#gracias',
+            cancel_url: baseUrl + '/#contenido',
             locale: 'es',
             allow_promotion_codes: true,
+            // Sin webhook solo se entregan pagos confirmados al volver de Stripe:
+            // se excluyen los métodos que se confirman días después.
+            excluded_payment_method_types: ['sepa_debit', 'multibanco', 'customer_balance'],
             metadata: {
                 slugs: purchasedSlugs.join(',')
             }
