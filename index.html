@@ -2406,7 +2406,9 @@
                 var { data: products, error } = await supabaseClient
                     .from('products')
                     .select('slug, name, description, price, stock, type, images')
-                    .eq('active', true);
+                    .eq('active', true)
+                    .order('sort_order', { ascending: true, nullsFirst: false })
+                    .order('created_at', { ascending: false });
 
                 if (error) throw error;
                 if (!products || products.length === 0) {
@@ -2952,7 +2954,10 @@
                 var msgEl = document.getElementById('graciasMensaje');
                 if (msgEl) {
                     msgEl.style.display = '';
-                    if (digital.length && !physical.length) {
+                    var onlyHalloween = purchases.length > 0 && purchases.every(function(p) { return p.slug === 'album-halloween-2026'; });
+                    if (onlyHalloween) {
+                        msgEl.innerHTML = '¡¡Significa muchísimo que te haya gustado tanto!! Feliz Halloween 🎃✨';
+                    } else if (digital.length && !physical.length) {
                         msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que lo disfrutes much\u00edsimo querido lector/a \u2728';
                     } else if (physical.length && !digital.length) {
                         msgEl.innerHTML = 'Significa much\u00edsimo que te haya gustado tanto !! Espero que disfrut\u00e9is haci\u00e9ndola juntos \u2728';
