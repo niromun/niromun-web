@@ -822,6 +822,34 @@
                 inset 0 1px 2px rgba(0,0,0,0.2);
         }
 
+        .retro-ctas {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .retro-cta-halloween {
+            background: linear-gradient(180deg, #F29A4E 0%, #D96C1F 50%, #B9530E 100%);
+            border-color: #6A2A08;
+            box-shadow:
+                2px 2px 0px #4A1E06,
+                inset 0 1px 0px rgba(255,255,255,0.25);
+        }
+
+        .retro-cta-halloween:hover {
+            background: linear-gradient(180deg, #F8AC66 0%, #E37C30 50%, #C9621C 100%);
+        }
+
+        .retro-cta-halloween:active {
+            box-shadow:
+                1px 1px 0px #4A1E06,
+                inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Al saltar a un producto (#producto-...), que no quede bajo la cabecera */
+        [id^="producto-"] { scroll-margin-top: 90px; }
+
         /* ---- Status bar ---- */
         .retro-statusbar {
             display: flex;
@@ -2027,7 +2055,10 @@
                     <span class="retro-tag green">&#x1F331; creadora</span>
                     <span class="retro-tag purple">&#x270D;&#xFE0F; storyteller</span>
                 </div>
-                <a href="#historias" class="retro-cta">&#x2606; Un rincón de inspiración &#x2606;</a>
+                <div class="retro-ctas">
+                    <a href="#historias" class="retro-cta">&#x2606; Un rinc&oacute;n de inspiraci&oacute;n &#x2606;</a>
+                    <a href="#producto-album-halloween-2026" class="retro-cta retro-cta-halloween" id="ctaHalloween">&#x1F383; &Aacute;lbum Halloween 2026 &#x1F383;</a>
+                </div>
             </div>
             <!-- Status bar -->
             <div class="retro-statusbar">
@@ -2425,7 +2456,6 @@
                 products.forEach(function(product, index) {
                     var images = product.images || [];
                     var mainImage = images.length > 0 ? images[0] : '';
-                    var pid = 'product-' + index;
                     var slug = product.slug || '';
                     var desc = (product.description || '').replace(/\n/g, '<br>');
 
@@ -2450,7 +2480,7 @@
 
                     var priceHtml = product.price != null ? product.price + '\u20ac' : '';
 
-                    html += '<div class="retro-section fade-in" id="' + pid + '" style="margin-bottom:1.5rem;">';
+                    html += '<div class="retro-section fade-in" id="producto-' + slug + '" style="margin-bottom:1.5rem;">';
                     html += '<div class="retro-section-titlebar"><div class="retro-tb-left"><span class="retro-tb-icon">&#x2605;</span> tienda_productos.shop</div><div class="retro-tb-btns"><span>&#x2500;</span><span>&#x25A1;</span><span>&#x2715;</span></div></div>';
                     html += '<div class="retro-section-body"><div class="product-showcase">';
                     html += '<div class="product-gallery"><div class="product-main-img">';
@@ -2468,6 +2498,13 @@
 
                 container.innerHTML = html;
                 container.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+
+                var ctaHalloween = document.getElementById('ctaHalloween');
+                if (ctaHalloween) ctaHalloween.hidden = !document.getElementById('producto-album-halloween-2026');
+                if (window.location.hash.indexOf('#producto-') === 0) {
+                    var target = document.getElementById(window.location.hash.slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }
 
             } catch (err) {
                 console.error('Error loading products:', err);
