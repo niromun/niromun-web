@@ -3025,9 +3025,10 @@
                     msgEl.style.display = '';
                     // Mensaje propio si la compra es de un solo producto; si no, el genérico
                     var THANKS_BY_SLUG = {
-                        'album-halloween-2026': '¡¡Significa muchísimo que te haya gustado tanto!!<br>Feliz Halloween 🎃',
+                        'album-halloween-2026': '¡¡Espero que este álbum acabe lleno de recuerdos, pegatinas y alguna que otra historia digna de Halloween!!<br><br>¡A disfrutarlo mucho! 🎃',
+                        'album-cromos': '¡¡Enhorabuena, acabas de convertir tus recuerdos en una colección de cromos!!<br><br>Ahora toca rellenarlo, que hay mucho huequito esperando a ser ocupado. Espero que te quede una auténtica obra de arte (o algo parecido) JAJAJA ♡',
                         'carnet-raton-biblioteca': 'Significa muchísimo que te haya gustado tanto !! Espero que lo disfrutes muchísimo querido lector/a ✨',
-                        'libreta-parejas': 'Significa muchísimo que te haya gustado tanto !! Espero que disfrutéis haciéndola juntos ✨'
+                        'libreta-parejas': '¡¡Ahora tenéis una excusa más para hacer planes, responder preguntitas y descubrir cosas que igual no sabíais el uno del otro!!<br><br>¡Espero que os guste muchísimo! ♡'
                     };
                     var onlySlug = purchases.length === 1 ? purchases[0].slug : null;
                     msgEl.innerHTML = THANKS_BY_SLUG[onlySlug] ||
