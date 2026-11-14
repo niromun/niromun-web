@@ -1281,13 +1281,13 @@
         /* ==================== PRODUCTOS ==================== */
         .product-showcase {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 2rem;
         }
 
         @media (min-width: 700px) {
             .product-showcase {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             }
         }
 
@@ -1369,16 +1369,57 @@
         }
 
         .product-description {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: 0.9rem;
+            position: relative;
+            font-family: 'Patrick Hand', 'M PLUS Rounded 1c', cursive;
+            font-size: 1.12rem;
             font-weight: 400;
             color: var(--text-mid);
-            line-height: 1.7;
+            line-height: 1.5;
+            background: #FFFFFF;
+            border: 2px dashed var(--sky-mid);
+            border-radius: var(--radius);
+            padding: 1.4rem 1.5rem;
+            margin: 0.6rem 0.4rem 0.9rem;
         }
 
         .product-description p {
-            margin-bottom: 0.75rem;
+            margin: 0;
         }
+
+        /* Títulos de la descripción: en Supabase se escriben **así** */
+        .product-description strong {
+            font-weight: 400;
+            font-size: 1.22em;
+            color: var(--sky-deep);
+            background: linear-gradient(transparent 60%, var(--sky-light) 60%);
+            padding: 0 0.15em;
+        }
+
+        /* "24 páginas", "60 páginas"... un poco más grande */
+        .desc-pages {
+            font-size: 1.3em;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        /* Stickers decorativos alrededor de la descripción (tema según el producto) */
+        .desc-sticker {
+            position: absolute;
+            font-size: 1.7rem;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            filter:
+                drop-shadow(1.5px 0 0 #FFF) drop-shadow(-1.5px 0 0 #FFF)
+                drop-shadow(0 1.5px 0 #FFF) drop-shadow(0 -1.5px 0 #FFF)
+                drop-shadow(1px 2px 1.5px rgba(58, 72, 96, 0.3));
+        }
+        .desc-sticker.s1 { top: -1rem; left: -0.6rem; transform: rotate(-14deg); }
+        .desc-sticker.s2 { top: -1.1rem; right: 18%; transform: rotate(10deg); }
+        .desc-sticker.s3 { top: 38%; right: -0.85rem; transform: rotate(16deg); }
+        .desc-sticker.s4 { bottom: -1rem; right: -0.5rem; transform: rotate(-8deg); }
+        .desc-sticker.s5 { bottom: -1.1rem; left: 22%; transform: rotate(12deg); }
+        .desc-sticker.s6 { top: 62%; left: -0.85rem; transform: rotate(-12deg); }
 
         .product-includes-title {
             font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -2425,12 +2466,25 @@
                 }
 
                 _productsCache = products;
+                var STICKERS_BY_SLUG = {
+                    'album-halloween-2026': ['👻', '🎃', '🦇', '🍬', '🕸️', '🕯️'],
+                    'album-cromos': ['📷', '💞', '✉️', '⭐', '📸', '🌼'],
+                    'libreta-parejas': ['💌', '💕', '✏️', '🌷', '🎟️', '🧸']
+                };
+                var DEFAULT_STICKERS = ['✨', '⭐', '💖', '🌸'];
+
                 var html = '';
                 products.forEach(function(product, index) {
                     var images = product.images || [];
                     var mainImage = images.length > 0 ? images[0] : '';
                     var slug = product.slug || '';
-                    var desc = (product.description || '').replace(/\n/g, '<br>');
+                    var desc = (product.description || '')
+                        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\d+[ \u00a0]+p\u00e1ginas/gi, '<span class="desc-pages">$&</span>')
+                        .replace(/\n/g, '<br>');
+                    var stickersHtml = (STICKERS_BY_SLUG[slug] || DEFAULT_STICKERS).map(function(s, i) {
+                        return '<span class="desc-sticker s' + (i + 1) + '" aria-hidden="true">' + s + '</span>';
+                    }).join('');
 
                     // Buy button
                     var buttonHtml = '';
@@ -2464,7 +2518,7 @@
                     html += '<div class="product-details">';
                     html += '<h3 class="product-detail-title">' + (product.name || '') + '</h3>';
                     if (priceHtml) html += '<span class="product-price">' + priceHtml + '</span>';
-                    html += '<div class="product-description"><p>' + desc + '</p></div>';
+                    html += '<div class="product-description">' + stickersHtml + '<p>' + desc + '</p></div>';
                     html += '<div class="product-buy-buttons">' + buttonHtml + cartBtnHtml + '</div>';
                     html += '</div></div></div></div>';
                 });
