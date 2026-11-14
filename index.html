@@ -1022,6 +1022,8 @@
 
         /* ==================== CONTENIDO ==================== */
         #contenido { background: transparent; }
+        /* Tienda más ancha para que las descripciones ocupen menos alto */
+        #contenido .container { max-width: 1150px; }
 
         .content-grid {
             display: grid;
@@ -1287,7 +1289,7 @@
 
         @media (min-width: 700px) {
             .product-showcase {
-                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
             }
         }
 
