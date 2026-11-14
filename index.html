@@ -1398,11 +1398,10 @@
         }
 
         /* "24 páginas", "60 páginas"... un poco más grande */
-        .desc-pages {
+        .desc-big {
             font-size: 1.25em;
             font-weight: 600;
             color: var(--text);
-            white-space: nowrap;
         }
 
         /* Stickers decorativos alrededor de la descripción (tema según el producto) */
@@ -2483,7 +2482,8 @@
                     var slug = product.slug || '';
                     var desc = (product.description || '')
                         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\d+[ \u00a0]+p\u00e1ginas/gi, '<span class="desc-pages">$&</span>')
+                        .replace(/(\d+)[ \u00a0]+(p\u00e1ginas)/gi, '<span class="desc-big">$1&nbsp;$2</span>')
+                        .replace(/NO necesitas Canva Pro/g, '<span class="desc-big">$&</span>')
                         .replace(/\n/g, '<br>');
                     var stickersHtml = (STICKERS_BY_SLUG[slug] || DEFAULT_STICKERS).map(function(s, i) {
                         return '<span class="desc-sticker s' + (i + 1) + '" aria-hidden="true">' + s + '</span>';
