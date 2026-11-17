@@ -1423,6 +1423,53 @@
         .desc-sticker.s5 { bottom: -1.1rem; left: 22%; transform: rotate(12deg); }
         .desc-sticker.s6 { top: 62%; left: -0.85rem; transform: rotate(-12deg); }
 
+        /* Resto de la descripción (tras el primer párrafo). En escritorio se ve siempre;
+           en móvil se abre con el botón "Ver más". */
+        .desc-more { display: grid; grid-template-rows: 1fr; }
+        .desc-more-inner { overflow: hidden; min-height: 0; }
+        .desc-more-inner p { padding-top: 1.6em; } /* el hueco de la línea en blanco */
+        .desc-toggle { display: none; }
+
+        @media (max-width: 699.98px) {
+            .desc-more {
+                grid-template-rows: 0fr;
+                visibility: hidden;
+                transition: grid-template-rows 0.35s ease, visibility 0.35s;
+            }
+            .product-description.open .desc-more {
+                grid-template-rows: 1fr;
+                visibility: visible;
+            }
+            .desc-toggle {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: fit-content;
+                margin: 0.9rem auto 0;
+                padding: 0.4rem 1.1rem;
+                font-family: inherit;
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: var(--sky-deep);
+                background: var(--sky-light);
+                border: 2px solid var(--sky-mid);
+                border-radius: 999px;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .desc-toggle-arrow {
+                width: 0.5em;
+                height: 0.5em;
+                border-right: 2.5px solid currentColor;
+                border-bottom: 2.5px solid currentColor;
+                transform: translateY(-0.15em) rotate(45deg);
+                transition: transform 0.3s ease;
+            }
+            .product-description.open .desc-toggle-arrow {
+                transform: translateY(0.15em) rotate(225deg);
+            }
+        }
+
         .product-includes-title {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             font-size: 1.05rem;
@@ -2447,6 +2494,23 @@
             thumb.classList.add('active');
         });
 
+        // ===== Descripciones en móvil: "Ver más" / "Ver menos" =====
+        document.addEventListener('click', function(e) {
+            var btn = e.target.closest('.desc-toggle');
+            if (!btn) return;
+            var box = btn.closest('.product-description');
+            var willOpen = !box.classList.contains('open');
+            if (!willOpen) {
+                // Al plegar, si el principio de la descripción quedó por encima, volver a él
+                var headerH = (document.getElementById('header') || {}).offsetHeight || 60;
+                var top = box.getBoundingClientRect().top;
+                if (top < headerH) window.scrollTo({ top: window.scrollY + top - headerH - 20, behavior: 'instant' });
+            }
+            box.classList.toggle('open', willOpen);
+            btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            btn.querySelector('.desc-toggle-label').textContent = willOpen ? 'Ver menos' : 'Ver más';
+        });
+
         // ===== LOAD PRODUCTS FROM SUPABASE =====
         var _productsCache = []; // store for cart use
 
@@ -2475,16 +2539,24 @@
                 };
                 var DEFAULT_STICKERS = ['✨', '⭐', '💖', '🌸'];
 
+                function formatDesc(text) {
+                    return text
+                        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/(\d+)[  ]+(páginas)/gi, '<span class="desc-big">$1&nbsp;$2</span>')
+                        .replace(/NO necesitas Canva Pro/g, '<span class="desc-big">$&</span>')
+                        .replace(/\r?\n/g, '<br>');
+                }
+
                 var html = '';
                 products.forEach(function(product, index) {
                     var images = product.images || [];
                     var mainImage = images.length > 0 ? images[0] : '';
                     var slug = product.slug || '';
-                    var desc = (product.description || '')
-                        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/(\d+)[ \u00a0]+(p\u00e1ginas)/gi, '<span class="desc-big">$1&nbsp;$2</span>')
-                        .replace(/NO necesitas Canva Pro/g, '<span class="desc-big">$&</span>')
-                        .replace(/\n/g, '<br>');
+                    // Primer p\u00e1rrafo (hasta la primera l\u00ednea en blanco) y el resto, que en m\u00f3vil va plegado
+                    var rawDesc = (product.description || '').trim();
+                    var split = rawDesc.match(/\r?\n[ \t]*\r?\n/);
+                    var introRaw = split ? rawDesc.slice(0, split.index) : rawDesc;
+                    var restRaw = split ? rawDesc.slice(split.index + split[0].length).replace(/^\s+/, '') : '';
                     var stickersHtml = (STICKERS_BY_SLUG[slug] || DEFAULT_STICKERS).map(function(s, i) {
                         return '<span class="desc-sticker s' + (i + 1) + '" aria-hidden="true">' + s + '</span>';
                     }).join('');
@@ -2521,7 +2593,13 @@
                     html += '<div class="product-details">';
                     html += '<h3 class="product-detail-title">' + (product.name || '') + '</h3>';
                     if (priceHtml) html += '<span class="product-price">' + priceHtml + '</span>';
-                    html += '<div class="product-description">' + stickersHtml + '<p>' + desc + '</p></div>';
+                    html += '<div class="product-description">' + stickersHtml + '<p>' + formatDesc(introRaw) + '</p>';
+                    if (restRaw) {
+                        html += '<div class="desc-more" id="desc-more-' + slug + '"><div class="desc-more-inner"><p>' + formatDesc(restRaw) + '</p></div></div>';
+                        html += '<button type="button" class="desc-toggle" aria-expanded="false" aria-controls="desc-more-' + slug + '">'
+                            + '<span class="desc-toggle-label">Ver más</span><span class="desc-toggle-arrow" aria-hidden="true"></span></button>';
+                    }
+                    html += '</div>';
                     html += '<div class="product-buy-buttons">' + buttonHtml + cartBtnHtml + '</div>';
                     html += '</div></div></div></div>';
                 });
